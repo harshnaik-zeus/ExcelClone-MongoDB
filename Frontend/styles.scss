@@ -1,0 +1,30 @@
+.container{
+    position: relative;
+    overflow: auto;
+    width: 1800px;
+    height: 900px;
+
+    #canvas1{
+        background: #DCDCDC;
+        z-index: 10;
+        position: sticky;
+        left: 0px;
+        padding-right: 0px;
+
+    }
+
+    #canvas2{
+        background: #DCDCDC;
+        position: sticky;
+        z-index: 10;
+        margin-left: 40px;
+        margin-top: -4px;
+        top: 0;
+    }
+    #canvas3{
+        background: white;
+        position: absolute;
+    }
+
+
+}
