@@ -114,24 +114,22 @@ const getCellAtPosition = (x, y) => {
 
 
 
-// excel.addEventListener('click', (event) => {
-//     const rect = excel.getBoundingClientRect();
-//     let x = event.clientX - rect.left;
-//     let y = event.clientY - rect.top;
-//     let top = getCellAtPosition(x,y).row;
-//     let left = getCellAtPosition(x,y).col;
-//     if (getCellAtPosition(x,y).row != 0) {
-//         let txtbox = this.getElementById('ipbox');
-//         txtbox.style.display = 'block';
-//         // txtbox.focus();
-//         // txtbox.style.value = none;
-//         // txtbox.nodeValue
-//         // txtbox.style.border = 'solid green';
-//         txtbox.style.top = `${(top + 1)*40}px`;
-//         // txtbox.style.left = `${((left + 1)*(cellWidths[x])) - 110}px`;
-//         txtbox.style.zIndex = 100;
-//     }
-// });
+excel.addEventListener('click', (event) => {
+    const rect = excel.getBoundingClientRect();
+    let x = event.clientX - rect.left;
+    let y = event.clientY - rect.top;
+    let top = getCellAtPosition(x,y).row;
+    let left = getCellAtPosition(x,y).col;
+        let txtbox = this.getElementById('ipbox');
+        txtbox.style.display = 'block';
+        // txtbox.focus();
+        // txtbox.style.value = none;
+        // txtbox.nodeValue
+        // txtbox.style.border = 'solid green';
+        txtbox.style.top = `${(top + 1)*40}px`;
+        txtbox.style.left = `${((left + 1)*150) - 110}px`;
+        txtbox.style.zIndex = 100;
+});
 
 
 header.addEventListener('dblclick', (event) => {
