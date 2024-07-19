@@ -1,17 +1,17 @@
-.container {
+#container {
   position: relative;
   overflow: auto;
-  width: 1800px;
-  height: 900px;
+  width: 2800px;
+  height: 1200px;
 }
-.container #canvas1 {
+#container #canvas1 {
   background: #DCDCDC;
   z-index: 10;
   position: sticky;
   left: 0px;
   padding-right: 0px;
 }
-.container #canvas2 {
+#container #canvas2 {
   background: #DCDCDC;
   position: sticky;
   z-index: 10;
@@ -19,12 +19,12 @@
   margin-top: -4px;
   top: 0;
 }
-.container #canvas3 {
+#container #canvas3 {
   background: white;
   position: absolute;
   z-index: 0;
 }
-.container #ipbox {
+#container #ipbox {
   position: absolute;
   display: none;
   top: 40px;
