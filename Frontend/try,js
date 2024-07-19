@@ -225,15 +225,21 @@ document.addEventListener("DOMContentLoaded", function() {
        for (let index = 0; index < cellWidths.length; index++) {
         sum += cellWidths[index];
         if (Math.abs(sum - startpoint) <= 10) {
-            console.log("yes");
             target = index;
         }
        }
     });
+    // header.addEventListener('pointermove', (event) => {
+    //     endpoint = event.offsetX;
+    //     let diff = endpoint - startpoint;
+    //     cellWidths[target];
+    //     drawTable();
+    // });
     header.addEventListener('pointerup', (event) => {
         endpoint = event.offsetX;
         let diff = endpoint - startpoint;
         cellWidths[target] += diff;
+        // if(cellWidths[target] + diff <= 100) diff = 0;
         drawTable();
     });
    
