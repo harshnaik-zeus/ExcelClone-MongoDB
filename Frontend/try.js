@@ -82,9 +82,9 @@ document.addEventListener("DOMContentLoaded", function() {
        a.clearRect(0, 0, id.width, id.height);
        b.clearRect(0, 0, header.width, header.height);
        c.clearRect(0, 0, excel.width, excel.height);
+       drawSelection();
        drawHeaders();
        drawIds();
-       drawSelection();
        drawExcel();
    }
    const getCellAtPosition = (x, y) => {
@@ -109,9 +109,11 @@ document.addEventListener("DOMContentLoaded", function() {
            let startY = Math.min(startCell.row, endCell.row);
            let endY = Math.max(startCell.row, endCell.row);
            let heightSum = 0, widthSum = 0;
+           let startHeight = 0, startWidth = 0;
            for (let row = 0; row < startY; row++) {
                heightSum += rowHeights[row];
            }
+           startHeight = heightSum;
            c.save();
            c.beginPath();
            for (let row = startY; row <= endY; row++) {
@@ -119,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function() {
                for (let col = 0; col < startX; col++) {
                    widthSum += cellWidths[col];
                }
+               startWidth = widthSum;
                for (let col = startX; col <= endX; col++) {
                    c.fillStyle = '#e6ffe6';
                    c.fillRect(widthSum, heightSum, cellWidths[col], rowHeights[row]);
@@ -126,23 +129,38 @@ document.addEventListener("DOMContentLoaded", function() {
                }
                heightSum += rowHeights[row];
            }
-        //    c.stroke();
-        //    c.restore();
-        //    c.save();
-        //    c.beginPath();
-        //    c.lineWidth = 2;
-        //    c.strokeStyle = 'rgb(16,124,65)';
-        //    c.strokeRect(widthSum, heightSum, 300 , 300);
-        //    c.stroke();
-        //    c.restore();
+           c.stroke();
+           c.restore();
+           b.save();
+           b.beginPath();
+           b.fillStyle = 'rgb(16,124,65)';
+           b.fillRect(startWidth, 0,widthSum - startWidth, cellHeight);
+           b.stroke();
+           b.restore();
+           a.save();
+           a.beginPath();
+           a.fillStyle = 'rgb(16,124,65)';
+           a.fillRect(0, startHeight,cellWidth, heightSum - startHeight);
+           a.stroke();
+           a.restore();
+           c.save();
+           c.beginPath();
+           c.lineWidth = 3;
+           c.strokeStyle = 'rgb(16,124,65)';
+           c.strokeRect(startWidth, startHeight,widthSum - startWidth, heightSum - startHeight);
+           c.stroke();
+           c.restore();
        }
    }
+   let toggle = false;
    excel.addEventListener('pointerdown', (event) => {
        const rect = excel.getBoundingClientRect();
        let x = event.clientX - rect.left;
        let y = event.clientY - rect.top;
        startCell = getCellAtPosition(x, y);
        endCell = startCell;
+    //    toggle = true;
+    //    console.log(toggle);
        drawTable();
    });
    excel.addEventListener('pointermove', (event) => {
@@ -158,6 +176,15 @@ document.addEventListener("DOMContentLoaded", function() {
        startCell = null;
        endCell = null;
    });
+
+   document.addEventListener('keydown' , (event) => {
+    console.log(startCell , endCell);
+   if (startCell && endCell && startCell == endCell) {
+     console.log("hello");
+   }
+    
+   });
+
    header.addEventListener('click', (event) => {
        const rect = header.getBoundingClientRect();
        const x = event.clientX - rect.left;
@@ -231,5 +258,5 @@ document.addEventListener("DOMContentLoaded", function() {
        rowHeights[rowTarget] += diff;
        drawTable();
    });
-   drawTable();
-});
+   drawTable();``
+});                                                                                                                                                                                                                                                                                                                
