@@ -1,8 +1,8 @@
 #container {
   position: relative;
   overflow: auto;
-  width: 2800px;
-  height: 1200px;
+  width: 3200px;
+  height: 1600px;
 }
 #container #canvas1 {
   background: #DCDCDC;

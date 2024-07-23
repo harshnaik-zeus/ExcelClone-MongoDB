@@ -16,14 +16,14 @@ document.addEventListener("DOMContentLoaded", function() {
    const c = excel.getContext('2d');
    let cellHeight = fixheight;
    let cellWidth = 150; // cell dimensions
-   const rows = 14;
-   const cols = 30;
+   const rows = 20;
+   const cols = 50;
    let startCell = null;
    let endCell = null;
    let laststart = null;
    let lastend = null;
-   const topics = ["Email", "Name", "Country", "State", "City", "Phone", "Add1", "Add2", "DOB", "2019-20", "2020-21", "2021-22", "2022-23", "2023-24"];
-   const data = ["ncooper@hotmail.com", "Kristen Robinson", "Jordan", "North Dakota", "West Valerieland", "(187)741-6224x24308", "2002 Seth Roads Suite 553", "Apt. 132", "1973-07-15", "92,890.00", "128,252.00", "123,602.00", "148,513.00", "78,362.00"];
+   const topics = ["Email", "Name", "Country", "State", "City", "Phone", "Add1", "Add2", "DOB", "2019-20", "2020-21", "2021-22", "2022-23", "2023-24" , " " , " " , " ", " " , " " , " "];
+   const data = ["ncooper@hotmail.com", "Kristen Robinson", "Jordan", "North Dakota", "West Valerieland", "(187)741-6224x24308", "2002 Seth Roads Suite 553", "Apt. 132", "1973-07-15", "92,890.00", "128,252.00", "123,602.00", "148,513.00", "78,362.00", " " , " " , " ", " " , " " , " "];
    let cellWidths = [];
    let rowHeights = Array(cols).fill(cellHeight);
    for (let index = 0; index < topics.length; index++) {
@@ -236,6 +236,7 @@ document.addEventListener("DOMContentLoaded", function() {
    header.addEventListener('pointerup', (event) => {
        endpoint = event.offsetX;
        let diff = endpoint - startpoint;
+       if((cellWidths[target] + diff) <= 40) diff = 0;
        cellWidths[target] += diff;
        drawTable();
    });
@@ -255,6 +256,7 @@ document.addEventListener("DOMContentLoaded", function() {
    id.addEventListener('pointerup', (event) => {
        rowEndPoint = event.offsetY;
        let diff = rowEndPoint - rowStartPoint;
+       if((rowHeights[rowTarget] + diff) <= 20) diff = 0;
        rowHeights[rowTarget] += diff;
        drawTable();
    });
