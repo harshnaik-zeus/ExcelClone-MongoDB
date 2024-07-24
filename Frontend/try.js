@@ -30,13 +30,13 @@ document.addEventListener("DOMContentLoaded", function() {
        cellWidths[index] = cellWidth;
    }
    const drawHeaders = () => {
-       let total = 0;
+       let total = 0.5;
        b.textAlign = 'center';
        b.textBaseline = 'middle';
        b.font = '16px Quicksand';
        for (let i = 0; i < 26; i++) {
            let char = String.fromCharCode(65 + i); // A to Z header
-           b.strokeRect(total, 0, cellWidths[i], cellHeight);
+           b.strokeRect(total, 0.5, cellWidths[i], cellHeight);
            b.fillText(char, total + cellWidths[i] / 2, cellHeight / 2);
            total += cellWidths[i];
        }
@@ -45,9 +45,9 @@ document.addEventListener("DOMContentLoaded", function() {
        a.textAlign = 'center';
        a.textBaseline = 'middle';
        a.font = '14px Quicksand';
-       let y = 0;
+       let y = 0.5;
        for (let i = 1; i < 1000; i++) { // 1 to 1000 id
-           a.strokeRect(0, y, cellHeight, rowHeights[i-1]);
+           a.strokeRect(0.5, y, cellHeight, rowHeights[i-1]);
            a.fillText(i, cellHeight / 2, y + rowHeights[i-1] / 2);
            y += rowHeights[i-1];
        }
@@ -57,9 +57,9 @@ document.addEventListener("DOMContentLoaded", function() {
        c.textBaseline = 'middle';
        c.font = '20px Quicksand';
        c.fontWeight = '600'; // Table data filling
-       let newtot = 0;
+       let newtot = 0.5;
        for (let i = 0; i < rows; i++) {
-           let heightSum = 0;
+           let heightSum = 0.5;
            for (let j = 0; j < cols; j++) {
                c.save();
                c.beginPath();
@@ -108,8 +108,8 @@ document.addEventListener("DOMContentLoaded", function() {
            let endX = Math.max(startCell.col, endCell.col);
            let startY = Math.min(startCell.row, endCell.row);
            let endY = Math.max(startCell.row, endCell.row);
-           let heightSum = 0, widthSum = 0;
-           let startHeight = 0, startWidth = 0;
+           let heightSum = 0.5, widthSum = 0.5;
+           let startHeight = 0.5, startWidth = 0.5;
            for (let row = 0; row < startY; row++) {
                heightSum += rowHeights[row];
            }
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
            c.save();
            c.beginPath();
            for (let row = startY; row <= endY; row++) {
-               widthSum = 0;
+               widthSum = 0.5;
                for (let col = 0; col < startX; col++) {
                    widthSum += cellWidths[col];
                }
@@ -134,20 +134,20 @@ document.addEventListener("DOMContentLoaded", function() {
            b.save();
            b.beginPath();
            b.fillStyle = 'rgb(16,124,65)';
-           b.fillRect(startWidth, 0,widthSum - startWidth, cellHeight);
+           b.fillRect(startWidth + 0.5, 0.5,widthSum - startWidth, cellHeight);
            b.stroke();
            b.restore();
            a.save();
            a.beginPath();
            a.fillStyle = 'rgb(16,124,65)';
-           a.fillRect(0, startHeight,cellWidth, heightSum - startHeight);
+           a.fillRect(0.5, startHeight + 0.5,cellWidth, heightSum - startHeight);
            a.stroke();
            a.restore();
            c.save();
            c.beginPath();
-           c.lineWidth = 3;
+           c.lineWidth = 2;
            c.strokeStyle = 'rgb(16,124,65)';
-           c.strokeRect(startWidth, startHeight,widthSum - startWidth, heightSum - startHeight);
+           c.strokeRect(startWidth - 0.5, startHeight - 0.5,widthSum - startWidth + 1, heightSum - startHeight + 1);
            c.stroke();
            c.restore();
        }
@@ -172,17 +172,50 @@ document.addEventListener("DOMContentLoaded", function() {
            drawTable();
        }
    });
+   let prevcell = null;
    excel.addEventListener('pointerup', (event) => {
+       prevcell = endCell;
        startCell = null;
        endCell = null;
    });
+   
+//    let firststart = {col:prevcell.col,row:prevcell.row};
+//    startCell = {col:firststart.col,row:firststart.row};
 
    document.addEventListener('keydown' , (event) => {
-    console.log(startCell , endCell);
-   if (startCell && endCell && startCell == endCell) {
-     console.log("hello");
-   }
     
+    event.preventDefault();
+      if (event.shiftKey) {
+      }
+      else{
+        if (event.key == 'ArrowUp') {
+            prevcell.row = Math.max(0 , prevcell.row - 1);
+            startCell = prevcell;
+            endCell = prevcell;
+            drawTable();
+          }
+          else if (event.key == 'ArrowDown') {
+            prevcell.row += 1;
+            startCell = prevcell;
+            endCell = prevcell;
+            drawTable();
+          }
+          else if(event.key == 'ArrowLeft'){
+            prevcell.col = Math.max(0 , prevcell.col - 1);
+            startCell = prevcell;
+            endCell = prevcell;
+            drawTable();
+          }
+          else if (event.key == 'ArrowRight') {
+            prevcell.col += 1;
+            startCell = prevcell;
+            endCell = prevcell;
+            drawTable();
+          }
+      }
+      startCell = null;
+      endCell = null;
+    //   event.scrollIntoView();
    });
 
    header.addEventListener('click', (event) => {
@@ -223,6 +256,7 @@ document.addEventListener("DOMContentLoaded", function() {
    let startpoint = null;
    let endpoint = null;
    let target = -1;
+   let isMoving = false;
    header.addEventListener('pointerdown', (event) => {
        startpoint = event.offsetX;
        let sum = 0;
@@ -230,10 +264,29 @@ document.addEventListener("DOMContentLoaded", function() {
            sum += cellWidths[index];
            if (Math.abs(sum - startpoint) <= 10) {
                target = index;
+               isMoving = true;
            }
        }
    });
+//    window.addEventListener('pointermove' ,(event) => {
+     
+//     let org = cellWidths[target];
+//      if (isMoving) {
+//         let currpoint = event.offsetX;
+//         let currdiff = currpoint - startpoint;
+//         cellWidths[target] += currdiff;
+//         // drawHeaders();
+//         b.clearRect(0, 0, header.width, header.height);
+//         drawSelection();
+//         drawHeaders();
+//         cellWidths[target] = org;
+//         console.log("hello");
+//      }
+
+//    });
+
    header.addEventListener('pointerup', (event) => {
+       isMoving = false;
        endpoint = event.offsetX;
        let diff = endpoint - startpoint;
        if((cellWidths[target] + diff) <= 40) diff = 0;
@@ -260,5 +313,5 @@ document.addEventListener("DOMContentLoaded", function() {
        rowHeights[rowTarget] += diff;
        drawTable();
    });
-   drawTable();``
+   drawTable();
 });                                                                                                                                                                                                                                                                                                                
