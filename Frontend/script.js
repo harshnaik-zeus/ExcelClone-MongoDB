@@ -3,19 +3,19 @@ document.addEventListener("DOMContentLoaded", function () {
   const header = document.getElementById("canvas2");
   const excel = document.getElementById("canvas3");
   const container = document.getElementById("container");
-  const fixheight = 40;
-  const fixwidth = 150;
+  const fixheight = 20;
+  const fixwidth = 100;
   id.width = fixheight;
   id.height = 2000;
-  header.width = 7000;
+  header.width = 5000;
   header.height = fixheight; // Sizing Table
   excel.height = 2000;
-  excel.width = 7000;
+  excel.width = 5000;
   const a = id.getContext("2d");
   const b = header.getContext("2d");
   const c = excel.getContext("2d");
   let cellHeight = fixheight;
-  let cellWidth = 150; // cell dimensions
+  let cellWidth = fixwidth; // cell dimensions
   const rows = 20;
   const cols = 50;
   let startCell = null;
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let total = 0.5;
     b.textAlign = "center";
     b.textBaseline = "middle";
-    b.font = "16px Quicksand";
+    b.font = "12px Calibri";
     for (let i = 0; i < 26; i++) {
       let char = String.fromCharCode(65 + i); // A to Z header
       b.strokeRect(total, 0.5, cellWidths[i], cellHeight);
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const drawIds = () => {
     a.textAlign = "center";
     a.textBaseline = "middle";
-    a.font = "14px Quicksand";
+    a.font = "10px Calibri";
     let y = 0.5;
     for (let i = 1; i < 1000; i++) {
       // 1 to 1000 id
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const drawExcel = () => {
     c.textAlign = "left";
     c.textBaseline = "middle";
-    c.font = "20px Quicksand";
+    c.font = "14px Calibri";
     c.fontWeight = "600"; // Table data filling
     let newtot = 0.5;
     for (let i = 0; i < rows; i++) {
@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         heightSum += rowHeights[row];
       }
-      // getCellAtPosition(startX,startY).scrollIntoView();
+
       c.stroke();
       c.restore();
       b.save();
@@ -191,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
       a.restore();
       c.save();
       c.beginPath();
-      c.lineWidth = 2;
+      // c.lineWidth = 2;
       c.strokeStyle = "rgb(16,124,65)";
       c.strokeRect(
         startWidth - 0.5,
@@ -204,10 +204,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   };
 
+
+
   let isSelected = false,
     widthresize = false,
     heightresize = false;
   let prevcell = null;
+
+  
   excel.addEventListener("pointerdown", (event) => {
     isSelected = true;
     widthresize = false;
@@ -219,14 +223,18 @@ document.addEventListener("DOMContentLoaded", function () {
     endCell = startCell;
     drawTable();
   });
+
   let startpoint = null;
   let endpoint = null;
   let target = -1;
   let isHeadMoving = false;
+
   header.addEventListener("pointerdown", (event) => {
     isSelected = false;
     widthresize = true;
     heightresize = false;
+    let dotline = document.getElementById('dottedline');
+    dotline.style.display = 'none';
     startpoint = event.offsetX;
     let sum = 0;
     for (let index = 0; index < cellWidths.length; index++) {
@@ -237,10 +245,12 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+
   let rowStartPoint = null;
   let rowEndPoint = null;
   let rowTarget = -1;
   let isIdMoving = false;
+
   id.addEventListener("pointerdown", (event) => {
     isSelected = false;
     widthresize = false;
@@ -269,21 +279,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (widthresize && isHeadMoving) {
       let org = cellWidths[target];
-      let currpoint = event.offsetX;
+      const rect = excel.getBoundingClientRect();
+      let currpoint = event.clientX - rect.left;
       let currdiff = currpoint - startpoint;
       cellWidths[target] += currdiff;
       b.clearRect(0, 0, header.width, header.height);
-      //  c.clearRect(0, 0, excel.width, excel.height);
-      //  c.save();
-      //  c.beginPath();
-      //  c.setLineDash([5, 15]);
-      //  c.moveTo(event.offsetX, 0);
-      //  c.lineTo(event.offsetX, 7000);
-      //  c.stroke();
-      //  c.restore();
       drawSelection();
       drawHeaders();
       cellWidths[target] = org;
+      let dotline = document.getElementById('dottedline');
+      dotline.style.display = 'block';
+      dotline.style.left = `${event.clientX - rect.x + 20}px`;
     }
 
     if (heightresize && isIdMoving) {
@@ -306,11 +312,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (widthresize && isHeadMoving) {
-      endpoint = event.offsetX;
+      const rect = excel.getBoundingClientRect();
+      endpoint = event.clientX - rect.left;
       let diff = endpoint - startpoint;
       if (cellWidths[target] + diff <= 40) diff = 0;
       cellWidths[target] += diff;
       isHeadMoving = false;
+      let dotline = document.getElementById('dottedline');
+      dotline.style.display = 'none';
       drawTable();
     }
 
@@ -325,8 +334,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.addEventListener("keydown", (event) => {
-    event.preventDefault();
-    if (event.shiftKey) {
+  event.preventDefault();
+   if (event.ctrlKey && (event.key === 'c' || event.key === 'C')) {
+     console.log("heppy Birthday");
+   }
+     else if (event.shiftKey) {
       if (!startCell) {
         startCell = { col: prevcell.col, row: prevcell.row };
       }
@@ -389,7 +401,7 @@ document.addEventListener("DOMContentLoaded", function () {
     endCell = { row: clickedRow, col: 14 };
     drawTable();
     startCell = null;
-    endCell = null;
+    endCell = null; 
   });
 
   header.addEventListener("dblclick", (event) => {
@@ -407,6 +419,7 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     drawTable();
   });
+  
 
   drawTable();
 });

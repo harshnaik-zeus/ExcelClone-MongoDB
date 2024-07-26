@@ -17,7 +17,7 @@
         background: #DCDCDC;
         position: sticky;
         z-index: 10;
-        margin-left: 40px;
+        margin-left: 20px;
         margin-top: -4px;
         top: 0;
     }
@@ -40,5 +40,15 @@
         font-size: 20px;
         font-family: Quicksand;
     }
-
+    
+    #dottedline{
+        position: absolute;
+        display: none;
+        height: 2000px;
+        width: 100px;
+        z-index: 100;
+        top: 0px;
+        left: 100px;
+        border-left: 2px dotted #444;
+    }
 }
