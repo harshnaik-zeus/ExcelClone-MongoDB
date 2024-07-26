@@ -256,6 +256,8 @@ document.addEventListener("DOMContentLoaded", function () {
     widthresize = false;
     heightresize = true;
     isIdMoving = true;
+    let dotline = document.getElementById('dottedline');
+    dotline.style.display = 'none';
     rowStartPoint = event.offsetY;
     let sum = 0;
     for (let index = 0; index < rowHeights.length; index++) {
@@ -290,17 +292,27 @@ document.addEventListener("DOMContentLoaded", function () {
       let dotline = document.getElementById('dottedline');
       dotline.style.display = 'block';
       dotline.style.left = `${event.clientX - rect.x + 20}px`;
+      dotline.style.top = '20px';
+      dotline.style.borderTop = 'none';
+      dotline.style.borderLeft = '2px  dotted #444';
     }
 
     if (heightresize && isIdMoving) {
+        const rect = excel.getBoundingClientRect();
         let org = rowHeights[rowTarget];
-        let currpoint = event.offsetY;
+        let currpoint = event.clientY - rect.top;
         let currdiff = currpoint - rowStartPoint;
         rowHeights[rowTarget] += currdiff;
         a.clearRect(0, 0, id.width, id.height);
         drawSelection();
         drawIds();
         rowHeights[rowTarget] = org;
+        let dotline = document.getElementById('dottedline');
+        dotline.style.display = 'block';
+        dotline.style.left = '20px';
+        dotline.style.top = `${event.clientY - rect.y + 20}px`
+        dotline.style.borderTop = '2px  dotted #444';
+        dotline.style.borderLeft = 'none';
     }
   });
 
@@ -324,11 +336,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (heightresize && isIdMoving) {
-      rowEndPoint = event.offsetY;
+      const rect = excel.getBoundingClientRect();
+      rowEndPoint = event.clientY - rect.top;
       let diff = rowEndPoint - rowStartPoint;
       if (rowHeights[rowTarget] + diff <= 20) diff = 0;
       rowHeights[rowTarget] += diff;
       isIdMoving = false;
+      let dotline = document.getElementById('dottedline');
+      dotline.style.display = 'none';
       drawTable();
     }
   });
