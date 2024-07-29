@@ -5,12 +5,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("container");
   const fixheight = 20;
   const fixwidth = 100;
+  const excelheight = 2500;
+  const excelwidth = 1000;
   id.width = fixheight;
-  id.height = 2000;
-  header.width = 5000;
+  id.height = excelwidth;
+  header.width = excelheight;
   header.height = fixheight; // Sizing Table
-  excel.height = 2000;
-  excel.width = 5000;
+  excel.height = excelwidth;
+  excel.width = excelheight;
   const a = id.getContext("2d");
   const b = header.getContext("2d");
   const c = excel.getContext("2d");
@@ -101,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
     c.font = "14px Calibri";
     c.fontWeight = "600"; // Table data filling
     let newtot = 0.5;
+    let sum = 0;
     for (let i = 0; i < rows; i++) {
       let heightSum = 0.5;
       for (let j = 0; j < cols; j++) {
@@ -119,6 +122,12 @@ document.addEventListener("DOMContentLoaded", function () {
         heightSum += rowHeights[j];
       }
       newtot += cellWidths[i];
+      // if (startCell && endCell) {
+      //   if (startCell.col >= 9 && startCell.row >= 1 && endCell.col >= 9 && endCell.row >= 1) {
+      //     console.log(startCell , endCell);
+      //     document.getElementsByClassName("sum")[0].innerHTML = "SUM : 34569";
+      //   }
+      // }
     }
   };
   function drawTable() {
@@ -174,9 +183,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         heightSum += rowHeights[row];
       }
-
       c.stroke();
       c.restore();
+      // c.save();
+      // c.beginPath();
+      // c.fillStyle = "white";
+      // c.fillRect(widthSum, heightSum, cellWidths[startX], rowHeights[startY]);
+      // c.stroke();
+      // c.restore();
       b.save();
       b.beginPath();
       b.fillStyle = "rgb(16,124,65)";
@@ -211,7 +225,6 @@ document.addEventListener("DOMContentLoaded", function () {
     heightresize = false;
   let prevcell = null;
 
-  
   excel.addEventListener("pointerdown", (event) => {
     isSelected = true;
     widthresize = false;
@@ -222,6 +235,9 @@ document.addEventListener("DOMContentLoaded", function () {
     startCell = getCellAtPosition(x, y);
     endCell = startCell;
     drawTable();
+    // let txtbox = this.getElementById('ipbox');
+    // txtbox.style.display = 'block';
+    
   });
 
   let startpoint = null;
@@ -311,16 +327,18 @@ document.addEventListener("DOMContentLoaded", function () {
         dotline.style.display = 'block';
         dotline.style.left = '20px';
         dotline.style.top = `${event.clientY - rect.y + 20}px`
-        dotline.style.borderTop = '2px  dotted #444';
+        dotline.style.borderTop = '2px dotted #444';
         dotline.style.borderLeft = 'none';
     }
   });
-
+let prevstart = null;
   document.addEventListener("pointerup", (event) => {
     if (isSelected) {
       prevcell = endCell;
+      prevstart = startCell;
       startCell = null;
       endCell = null;
+      // console.log(prevstart, prevcell);
     }
 
     if (widthresize && isHeadMoving) {
@@ -355,7 +373,7 @@ document.addEventListener("DOMContentLoaded", function () {
    }
      else if (event.shiftKey) {
       if (!startCell) {
-        startCell = { col: prevcell.col, row: prevcell.row };
+        startCell = { col: prevstart.col, row: prevstart.row };
       }
       if (event.key == "ArrowUp") {
         prevcell.row = Math.max(0, prevcell.row - 1);
@@ -380,9 +398,11 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       startCell = prevcell;
       endCell = prevcell;
+      prevstart = endCell;
       drawTable();
       startCell = null;
       endCell = null;
+
     }
   });
 
@@ -428,8 +448,8 @@ document.addEventListener("DOMContentLoaded", function () {
       col++;
     }
     cellWidths[col] = Math.max(
-      b.measureText(topics[col]).width + 70,
-      b.measureText(data[col]).width + 70,
+      b.measureText(topics[col]).width + 40,
+      b.measureText(data[col]).width + 40,
       150
     );
     drawTable();

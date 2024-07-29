@@ -1,8 +1,8 @@
 #container {
   position: relative;
   overflow: auto;
-  width: 3200px;
-  height: 1600px;
+  width: 2000px;
+  height: 800px;
 }
 #container #canvas1 {
   background: #DCDCDC;
@@ -28,14 +28,14 @@
   position: absolute;
   display: none;
   top: 40px;
-  left: 40px;
-  height: 31px;
-  width: 139px;
-  z-index: 0;
-  border: 4px solid black;
+  left: 20px;
+  height: 17px;
+  width: 95px;
+  z-index: 10;
+  border: 1px solid black;
   border-radius: 0;
-  font-size: 20px;
-  font-family: Quicksand;
+  font-size: 14px;
+  font-family: calibri;
 }
 #container #dottedline {
   position: absolute;
@@ -43,4 +43,11 @@
   height: 2000px;
   width: 5000px;
   z-index: 100;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-top: 20px;
 }/*# sourceMappingURL=styles.css.map */
