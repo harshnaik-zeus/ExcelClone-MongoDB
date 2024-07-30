@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
  
   const rows = 20;
   const cols = 50;
-  let startCell = null;
+  let startCell =  null;
   let endCell = null;
   let laststart = null;
   let lastend = null;
@@ -408,10 +408,7 @@ let prevstart = null;
 
   document.addEventListener("keydown", (event) => {
   event.preventDefault();
-   if (event.ctrlKey && (event.key === 'c' || event.key === 'C')) {
-     console.log("heppy Birthday");
-   }
-     else if (event.shiftKey) {
+    if (event.shiftKey) {
       if (!startCell) {
         startCell = { col: prevstart.col, row: prevstart.row };
       }
@@ -490,11 +487,10 @@ let prevstart = null;
     cellWidths[col] = Math.max(
       b.measureText(topics[col]).width + 40,
       b.measureText(data[col]).width + 40,
-      150
+      100
     );
     drawTable();
   });
-  
 
   drawTable();
 });
