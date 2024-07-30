@@ -278,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let rowEndPoint = null;
   let rowTarget = -1;
   let isIdMoving = false;
-
+  let idsurplus = 0;
 
   id.addEventListener("pointerdown", (event) => {
     isSelected = false;
@@ -293,6 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
       sum += rowHeights[index];
       if (Math.abs(sum - rowStartPoint) <= 10) {
         rowTarget = index;
+        idsurplus = sum - rowStartPoint;
       }
     }
   });
@@ -340,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let dotline = document.getElementById('dottedline');
         dotline.style.display = 'block';
         dotline.style.left = '20px';
-        dotline.style.top = `${event.clientY - rect.y + 20}px`
+        dotline.style.top = `${event.clientY - rect.y + 20 + idsurplus}px`
         dotline.style.borderTop = '2px dotted #444';
         dotline.style.borderLeft = 'none';
     }
