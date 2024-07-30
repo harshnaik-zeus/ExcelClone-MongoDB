@@ -7,17 +7,19 @@ document.addEventListener("DOMContentLoaded", function () {
   const fixwidth = 100;
   const excelheight = 2500;
   const excelwidth = 1000;
-  id.width = fixheight;
-  id.height = excelwidth;
-  header.width = excelheight;
-  header.height = fixheight; // Sizing Table
-  excel.height = excelwidth;
-  excel.width = excelheight;
+  const scale = window.devicePixelRatio;
+  id.width = fixheight * scale;
+  id.height = excelwidth  * scale;
+  header.width = excelheight  * scale;
+  header.height = fixheight  * scale; // Sizing Table
+  excel.height = excelwidth  * scale;
+  excel.width = excelheight  * scale;
   const a = id.getContext("2d");
   const b = header.getContext("2d");
   const c = excel.getContext("2d");
   let cellHeight = fixheight;
   let cellWidth = fixwidth; // cell dimensions
+ 
   const rows = 20;
   const cols = 50;
   let startCell = null;
@@ -246,6 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let isHeadMoving = false;
   let headselection = false;
   let headtarget = -1;
+  let surplus = 0;
 
   header.addEventListener("pointerdown", (event) => {
     isSelected = false;
@@ -259,6 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
       sum += cellWidths[index];
       if (Math.abs(sum - startpoint) <= 10) {
         isHeadMoving = true;
+        surplus = sum - startpoint;
         target = index;
         return;
       }
@@ -274,6 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let rowEndPoint = null;
   let rowTarget = -1;
   let isIdMoving = false;
+
 
   id.addEventListener("pointerdown", (event) => {
     isSelected = false;
@@ -315,7 +320,7 @@ document.addEventListener("DOMContentLoaded", function () {
       cellWidths[target] = org;
       let dotline = document.getElementById('dottedline');
       dotline.style.display = 'block';
-      dotline.style.left = `${event.clientX - rect.x + 20}px`;
+      dotline.style.left = `${event.clientX - rect.x + 20 + surplus}px`;
       dotline.style.top = '20px';
       dotline.style.borderTop = 'none';
       dotline.style.borderLeft = '2px  dotted #444';
