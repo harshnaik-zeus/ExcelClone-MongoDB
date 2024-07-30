@@ -244,6 +244,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let endpoint = null;
   let target = -1;
   let isHeadMoving = false;
+  let headselection = false;
+  let headtarget = -1;
 
   header.addEventListener("pointerdown", (event) => {
     isSelected = false;
@@ -258,6 +260,12 @@ document.addEventListener("DOMContentLoaded", function () {
       if (Math.abs(sum - startpoint) <= 10) {
         isHeadMoving = true;
         target = index;
+        return;
+      }
+      else if (startpoint <= sum){
+        headselection = true;
+        headtarget = index;  
+        return;
       }
     }
   });
@@ -311,6 +319,7 @@ document.addEventListener("DOMContentLoaded", function () {
       dotline.style.top = '20px';
       dotline.style.borderTop = 'none';
       dotline.style.borderLeft = '2px  dotted #444';
+      // console.log(target);
     }
 
     if (heightresize && isIdMoving) {
@@ -329,6 +338,17 @@ document.addEventListener("DOMContentLoaded", function () {
         dotline.style.top = `${event.clientY - rect.y + 20}px`
         dotline.style.borderTop = '2px dotted #444';
         dotline.style.borderLeft = 'none';
+    }
+
+    if (headselection && !isHeadMoving) {
+      startCell = { col: headtarget, row:0 };
+      let x = event.offsetX;
+      let y = 0;
+      endCell = getCellAtPosition(x,y);
+      endCell.row = cols - 1;
+      drawTable();
+      // console.log(startCell , endCell);
+
     }
   });
 let prevstart = null;
@@ -363,6 +383,20 @@ let prevstart = null;
       let dotline = document.getElementById('dottedline');
       dotline.style.display = 'none';
       drawTable();
+    }
+
+    if(headselection && !isHeadMoving) {
+      startCell = { col: headtarget, row:0 };
+      let x = event.offsetX;
+      let y = 0;
+      endCell = getCellAtPosition(x,y);
+      endCell.row = cols - 1;
+      drawTable();
+      // console.log(startCell , endCell);
+      // drawTable();
+      startCell = null;
+      endCell = null;
+      headselection = false;
     }
   });
 
@@ -413,18 +447,18 @@ let prevstart = null;
     }
   });
 
-  header.addEventListener("click", (event) => {
-    const rect = header.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    const cell = getCellAtPosition(x, y);
-    const clickedCol = cell.col;
-    startCell = { row: 0, col: clickedCol };
-    endCell = { row: cols - 1, col: clickedCol };
-    drawTable();
-    startCell = null;
-    endCell = null;
-  });
+  // header.addEventListener("click", (event) => {
+  //   const rect = header.getBoundingClientRect();
+  //   const x = event.clientX - rect.left;
+  //   const y = event.clientY - rect.top;
+  //   const cell = getCellAtPosition(x, y);
+  //   const clickedCol = cell.col;
+  //   startCell = { row: 0, col: clickedCol };
+  //   endCell = { row: cols - 1, col: clickedCol };
+  //   drawTable();
+  //   startCell = null;
+  //   endCell = null;
+  // });
 
   id.addEventListener("click", (event) => {
     const rect = id.getBoundingClientRect();
