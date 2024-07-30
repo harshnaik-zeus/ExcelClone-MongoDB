@@ -394,6 +394,7 @@ let prevstart = null;
       drawTable();
       // console.log(startCell , endCell);
       // drawTable();
+      prevcell = startCell;
       startCell = null;
       endCell = null;
       headselection = false;
