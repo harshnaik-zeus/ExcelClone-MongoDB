@@ -218,7 +218,12 @@ document.addEventListener("DOMContentLoaded", function () {
       b.restore();
       a.save();
       a.beginPath();
-      a.fillStyle = "#caead8";
+      if (idselection) {
+        a.fillStyle = "#107c41";
+      }
+      else{
+        a.fillStyle = "#caead8";
+      }
       a.fillRect(0.5, startHeight + 0.5, cellWidth, heightSum - startHeight);
       a.stroke();
       a.restore();
@@ -232,6 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
         widthSum - startWidth + 1,
         heightSum - startHeight + 1
       );
+      // console.log("border");
       c.stroke();
       c.restore();
     }
@@ -281,6 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
         isHeadMoving = true;
         surplus = sum - startpoint;
         target = index;
+        // header.style.cursor = "col-resize";
         return;
       }
       else if (startpoint <= sum){
@@ -295,6 +302,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let rowEndPoint = null;
   let rowTarget = -1;
   let isIdMoving = false;
+  let idselection = false;
+  let idtarget = false;
   let idsurplus = 0;
 
   id.addEventListener("pointerdown", (event) => {
@@ -308,10 +317,18 @@ document.addEventListener("DOMContentLoaded", function () {
     let sum = 0;
     for (let index = 0; index < rowHeights.length; index++) {
       sum += rowHeights[index];
-      if (Math.abs(sum - rowStartPoint) <= 10) {
+      if (Math.abs(sum - rowStartPoint) <= 5) {
         rowTarget = index;
         idsurplus = sum - rowStartPoint;
         isIdMoving = true;
+        // console.log("yes");
+        return;
+      }
+      else if(rowStartPoint <= sum){
+         idselection = true;
+         idtarget = index;
+        //  console.log("no");
+         return;
       }
     }
   });
@@ -342,7 +359,7 @@ document.addEventListener("DOMContentLoaded", function () {
       dotline.style.left = `${event.clientX - rect.x + 20 + surplus}px`;
       dotline.style.top = '20px';
       dotline.style.borderTop = 'none';
-      dotline.style.borderLeft = '2px  dotted #444';
+      dotline.style.borderLeft = '2px  dotted #999';
       // console.log(target);
     }
 
@@ -360,7 +377,7 @@ document.addEventListener("DOMContentLoaded", function () {
         dotline.style.display = 'block';
         dotline.style.left = '20px';
         dotline.style.top = `${event.clientY - rect.y + 20 + idsurplus}px`
-        dotline.style.borderTop = '2px dotted #444';
+        dotline.style.borderTop = '2px dotted #999';
         dotline.style.borderLeft = 'none';
     }
 
@@ -373,6 +390,15 @@ document.addEventListener("DOMContentLoaded", function () {
       drawTable();
       // console.log(startCell , endCell);
 
+    }
+
+    if (idselection && !isIdMoving) {
+      startCell = {col:0 , row: idtarget};
+      let x = 0;
+      let y = event.offsetY;
+      endCell = getCellAtPosition(x,y);
+      endCell.col = rows - 1;
+      drawTable();
     }
   });
 let prevstart = null;
@@ -416,12 +442,23 @@ let prevstart = null;
       endCell = getCellAtPosition(x,y);
       endCell.row = cols - 1;
       drawTable();
-      // console.log(startCell , endCell);
-      // drawTable();
       prevcell = startCell;
       startCell = null;
       endCell = null;
       headselection = false;
+    }
+
+    if (idselection && !isIdMoving) {
+      startCell = {col:0 , row: idtarget};
+      let x = 0;
+      let y = event.offsetY;
+      endCell = getCellAtPosition(x,y);
+      endCell.col = rows - 1;
+      drawTable();
+      prevcell = startCell;
+      startCell = null;
+      endCell = null;
+      idselection = false;
     }
   });
 
