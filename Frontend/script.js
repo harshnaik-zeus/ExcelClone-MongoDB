@@ -301,16 +301,17 @@ document.addEventListener("DOMContentLoaded", function () {
     isSelected = false;
     widthresize = false;
     heightresize = true;
-    isIdMoving = true;
     let dotline = document.getElementById('dottedline');
     dotline.style.display = 'none';
-    rowStartPoint = event.offsetY;
+    const rect = excel.getBoundingClientRect();
+    rowStartPoint = event.clientY - rect.top;
     let sum = 0;
     for (let index = 0; index < rowHeights.length; index++) {
       sum += rowHeights[index];
       if (Math.abs(sum - rowStartPoint) <= 10) {
         rowTarget = index;
         idsurplus = sum - rowStartPoint;
+        isIdMoving = true;
       }
     }
   });
@@ -486,18 +487,18 @@ let prevstart = null;
   //   endCell = null;
   // });
 
-  id.addEventListener("click", (event) => {
-    const rect = id.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    const cell = getCellAtPosition(x, y);
-    const clickedRow = cell.row;
-    startCell = { row: clickedRow, col: 0 };
-    endCell = { row: clickedRow, col: 20 };
-    drawTable();
-    startCell = null;
-    endCell = null; 
-  });
+  // id.addEventListener("click", (event) => {
+  //   const rect = id.getBoundingClientRect();
+  //   const x = event.clientX - rect.left;
+  //   const y = event.clientY - rect.top;
+  //   const cell = getCellAtPosition(x, y);
+  //   const clickedRow = cell.row;
+  //   startCell = { row: clickedRow, col: 0 };
+  //   endCell = { row: clickedRow, col: 20 };
+  //   drawTable();
+  //   startCell = null;
+  //   endCell = null; 
+  // });
 
   header.addEventListener("dblclick", (event) => {
     let h = event.clientX;
