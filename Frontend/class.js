@@ -83,29 +83,38 @@ class Table {
     }
 
     drawExcel() {
-        this.c.textAlign = "left";
-        this.c.textBaseline = "middle";
-        this.c.font = "20px Quicksand";
-        this.c.fontWeight = "600";
-        let newTotal = 0.5;
-        for (let i = 0; i < this.rows; i++) {
-            let heightSum = 0.5;
-            for (let j = 0; j < this.cols; j++) {
-                this.c.save();
-                this.c.beginPath();
-                this.c.rect(newTotal, heightSum, this.cellWidths[i], this.rowHeights[j]);
-                this.c.clip();
-                this.c.fillStyle = "black";
-                if (j == 0) {
-                    this.c.fillText(this.topics[i], newTotal + 10, heightSum + this.rowHeights[j] / 2);
-                } else {
-                    this.c.fillText(this.data[i], newTotal + 10, heightSum + this.rowHeights[j] / 2);
-                }
-                this.c.stroke();
-                this.c.restore();
-                heightSum += this.rowHeights[j];
-            }
-            newTotal += this.cellWidths[i];
+        // this.c.textAlign = "left";
+        // this.c.textBaseline = "middle";
+        // this.c.font = "20px Quicksand";
+        // this.c.fontWeight = "600";
+        // let newTotal = 0.5;
+        // for (let i = 0; i < this.rows; i++) {
+        //     let heightSum = 0.5;
+        //     for (let j = 0; j < this.cols; j++) {
+        //         this.c.save();
+        //         this.c.beginPath();
+        //         this.c.rect(newTotal, heightSum, this.cellWidths[i], this.rowHeights[j]);
+        //         this.c.clip();
+        //         this.c.fillStyle = "black";
+        //         if (j == 0) {
+        //             this.c.fillText(this.topics[i], newTotal + 10, heightSum + this.rowHeights[j] / 2);
+        //         } else {
+        //             this.c.fillText(this.data[i], newTotal + 10, heightSum + this.rowHeights[j] / 2);
+        //         }
+        //         this.c.stroke();
+        //         this.c.restore();
+        //         heightSum += this.rowHeights[j];
+        //     }
+        //     newTotal += this.cellWidths[i];
+        // }
+
+
+        let startX = 0.5;
+        let startY = 0.5;
+
+        for (let index = 0; index < this.cellWidths.length; index++) {
+            this.c.beginPath();
+            
         }
     }
 

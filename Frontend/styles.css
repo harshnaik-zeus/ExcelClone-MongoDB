@@ -1,18 +1,18 @@
 #container {
   position: relative;
   overflow: auto;
-  width: 2000px;
+  width: 1900px;
   height: 800px;
 }
 #container #canvas1 {
-  background: #DCDCDC;
+  background: #f5f5f5;
   z-index: 10;
   position: sticky;
   left: 0px;
   padding-right: 0px;
 }
 #container #canvas2 {
-  background: #DCDCDC;
+  background: #f5f5f5;
   position: sticky;
   z-index: 10;
   margin-left: 20px;
@@ -40,8 +40,8 @@
 #container #dottedline {
   position: absolute;
   display: none;
-  height: 2000px;
-  width: 5000px;
+  height: 800px;
+  width: 2000px;
   z-index: 100;
 }
 

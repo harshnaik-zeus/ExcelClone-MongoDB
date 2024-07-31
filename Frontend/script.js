@@ -5,15 +5,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("container");
   const fixheight = 20;
   const fixwidth = 100;
-  const excelheight = 2500;
-  const excelwidth = 1000;
-  const scale = window.devicePixelRatio;
-  id.width = fixheight * scale;
-  id.height = excelwidth  * scale;
-  header.width = excelheight  * scale;
-  header.height = fixheight  * scale; // Sizing Table
-  excel.height = excelwidth  * scale;
-  excel.width = excelheight  * scale;
+  const excelheight = 1000;
+  const excelwidth = 2000;
+  id.width = fixheight;
+  id.height = excelheight;
+  header.width = excelwidth;
+  header.height = fixheight; // Sizing Table
+  excel.height = excelheight;
+  excel.width = excelwidth;
+  // ctx.scale(scale, scale);
   const a = id.getContext("2d");
   const b = header.getContext("2d");
   const c = excel.getContext("2d");
@@ -76,27 +76,38 @@ document.addEventListener("DOMContentLoaded", function () {
     cellWidths[index] = cellWidth;
   }
   const drawHeaders = () => {
-    let total = 0.5;
+    let start = 0.5;
     b.textAlign = "center";
     b.textBaseline = "middle";
     b.font = "12px Calibri";
     for (let i = 0; i < 26; i++) {
       let char = String.fromCharCode(65 + i); // A to Z header
-      b.strokeRect(total, 0.5, cellWidths[i], cellHeight);
-      b.fillText(char, total + cellWidths[i] / 2, cellHeight / 2);
-      total += cellWidths[i];
+      b.save();
+      b.beginPath();
+      b.lineWidth = 0.2;
+      b.moveTo(start , 0);
+      b.lineTo(start, fixheight);
+      b.fillText(char , start + cellWidths[i]/2 , fixheight/2);
+      start += cellWidths[i];
+      b.stroke();
+      b.restore();
     }
   };
   const drawIds = () => {
     a.textAlign = "center";
     a.textBaseline = "middle";
     a.font = "10px Calibri";
-    let y = 0.5;
-    for (let i = 1; i < 1000; i++) {
-      // 1 to 1000 id
-      a.strokeRect(0.5, y, cellHeight, rowHeights[i - 1]);
-      a.fillText(i, cellHeight / 2, y + rowHeights[i - 1] / 2);
-      y += rowHeights[i - 1];
+    let start = 0.5;
+    for (let i = 0; i < 50; i++) {
+      a.save();
+      a.beginPath();
+      a.lineWidth = 0.2;
+      a.moveTo(0 , start);
+      a.lineTo(fixheight , start);
+      start += rowHeights[i];
+      a.fillText( i + 1, fixheight/2, start - rowHeights[i]/2);
+      a.stroke();
+      a.restore();
     }
   };
   const drawExcel = () => {
@@ -104,34 +115,34 @@ document.addEventListener("DOMContentLoaded", function () {
     c.textBaseline = "middle";
     c.font = "14px Calibri";
     c.fontWeight = "600"; // Table data filling
-    let newtot = 0.5;
-    let sum = 0;
-    for (let i = 0; i < rows; i++) {
-      let heightSum = 0.5;
-      for (let j = 0; j < cols; j++) {
-        c.save();
-        c.beginPath();
-        c.rect(newtot, heightSum, cellWidths[i], rowHeights[j]);
-        c.clip();
-        c.fillStyle = "black";
-        if (j == 0) {
-          c.fillText(topics[i], newtot + 10, heightSum + rowHeights[j] / 2);
-        } else {
-          c.fillText(data[i], newtot + 10, heightSum + rowHeights[j] / 2);
-        }
-        c.stroke();
-        c.restore();
-        heightSum += rowHeights[j];
-      }
-      newtot += cellWidths[i];
-      // if (startCell && endCell) {
-      //   if (startCell.col >= 9 && startCell.row >= 1 && endCell.col >= 9 && endCell.row >= 1) {
-      //     console.log(startCell , endCell);
-      //     document.getElementsByClassName("sum")[0].innerHTML = "SUM : 34569";
-      //   }
-      // }
+    let startX = 0.5;
+    let startY = 0.5;
+
+    for (let index = 0; index <= cellWidths.length; index++) {
+     c.save();
+     c.beginPath();
+     c.moveTo(startX , 0);
+     c.lineTo(startX, excelheight);
+     c.lineWidth = 0.3;
+     c.fillStyle = "#e3e3e3";
+     startX += cellWidths[index]; 
+     c.stroke();
+     c.restore();
     }
+
+    for (let index = 0; index <= rowHeights.length; index++) {
+      c.save();
+      c.beginPath();
+      c.moveTo(0 , startY);
+      c.lineTo(excelwidth, startY);
+      c.lineWidth = 0.3;
+      c.fillStyle = "#e3e3e3";
+      startY += rowHeights[index]; 
+      c.stroke();
+      c.restore();
+     }
   };
+  
   function drawTable() {
     a.clearRect(0, 0, id.width, id.height);
     b.clearRect(0, 0, header.width, header.height);
@@ -195,13 +206,19 @@ document.addEventListener("DOMContentLoaded", function () {
       // c.restore();
       b.save();
       b.beginPath();
-      b.fillStyle = "rgb(16,124,65)";
+      if (headselection) {
+        b.fillStyle = "#107c41";
+      }
+      else{
+        b.fillStyle = "#caead8";
+      }
       b.fillRect(startWidth + 0.5, 0.5, widthSum - startWidth, cellHeight);
+      // b.beginPath();
       b.stroke();
       b.restore();
       a.save();
       a.beginPath();
-      a.fillStyle = "rgb(16,124,65)";
+      a.fillStyle = "#caead8";
       a.fillRect(0.5, startHeight + 0.5, cellWidth, heightSum - startHeight);
       a.stroke();
       a.restore();
@@ -424,7 +441,13 @@ let prevstart = null;
       }
       endCell = prevcell;
       drawTable();
-    } else {
+    }  
+    else if (event.ctrlKey) {
+      if (event.key == "c" || event.key == "C") {
+        console.log("happy");
+      }
+    }
+    else {
       if (event.key == "ArrowUp") {
         prevcell.row = Math.max(0, prevcell.row - 1);
       } else if (event.key == "ArrowDown") {
@@ -439,8 +462,7 @@ let prevstart = null;
       prevstart = endCell;
       drawTable();
       startCell = null;
-      endCell = null;
-
+      endCell = null; 
     }
   });
 
@@ -471,7 +493,7 @@ let prevstart = null;
     const cell = getCellAtPosition(x, y);
     const clickedRow = cell.row;
     startCell = { row: clickedRow, col: 0 };
-    endCell = { row: clickedRow, col: 14 };
+    endCell = { row: clickedRow, col: 20 };
     drawTable();
     startCell = null;
     endCell = null; 
