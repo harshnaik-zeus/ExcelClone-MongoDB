@@ -3,10 +3,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const header = document.getElementById("canvas2");
   const excel = document.getElementById("canvas3");
   const container = document.getElementById("container");
-  const fixheight = 20;
-  const fixwidth = 100;
-  const excelheight = 1000;
-  const excelwidth = 2000;
+  let scale = window.devicePixelRatio;
+  let fixheight = 20;
+  let fixwidth = 100;
+  let excelheight = 1000;
+  let excelwidth = 2000;
   id.width = fixheight;
   id.height = excelheight;
   header.width = excelwidth;
@@ -75,6 +76,20 @@ document.addEventListener("DOMContentLoaded", function () {
   for (let index = 0; index < topics.length; index++) {
     cellWidths[index] = cellWidth;
   }
+
+  // const UpdateDevicePixelRatio = () => {
+  //   const scale = window.devicePixelRatio || 1;
+
+  //   fixheight *= scale;
+  //   fixwidth *= scale
+  //   excelheight *= scale;
+  //   excelwidth *= scale;
+
+  //   a.scale(scale,scale);
+  //   a.scale(scale,scale);
+  //   b.scale(scale,scale);
+  // };
+
   const drawHeaders = () => {
     let start = 0.5;
     b.textAlign = "center";
@@ -241,6 +256,8 @@ document.addEventListener("DOMContentLoaded", function () {
       c.stroke();
       c.restore();
     }
+    laststart = startCell;
+    lastend = endCell;
   };
 
 
@@ -249,6 +266,7 @@ document.addEventListener("DOMContentLoaded", function () {
     widthresize = false,
     heightresize = false;
   let prevcell = null;
+
 
   excel.addEventListener("pointerdown", (event) => {
     isSelected = true;
@@ -351,8 +369,11 @@ document.addEventListener("DOMContentLoaded", function () {
       let currdiff = currpoint - startpoint;
       cellWidths[target] += currdiff;
       b.clearRect(0, 0, header.width, header.height);
-      drawSelection();
-      drawHeaders();
+      startCell = laststart;
+      endCell = lastend;
+      // headselection = true;
+      drawTable();
+      // headselection = false;
       cellWidths[target] = org;
       let dotline = document.getElementById('dottedline');
       dotline.style.display = 'block';
@@ -370,8 +391,9 @@ document.addEventListener("DOMContentLoaded", function () {
         let currdiff = currpoint - rowStartPoint;
         rowHeights[rowTarget] += currdiff;
         a.clearRect(0, 0, id.width, id.height);
-        drawSelection();
-        drawIds();
+        startCell = laststart;
+        endCell = lastend;
+        drawTable();
         rowHeights[rowTarget] = org;
         let dotline = document.getElementById('dottedline');
         dotline.style.display = 'block';
@@ -420,6 +442,8 @@ let prevstart = null;
       isHeadMoving = false;
       let dotline = document.getElementById('dottedline');
       dotline.style.display = 'none';
+      startCell = laststart;
+      endCell = lastend;
       drawTable();
     }
 
@@ -432,6 +456,8 @@ let prevstart = null;
       isIdMoving = false;
       let dotline = document.getElementById('dottedline');
       dotline.style.display = 'none';
+      startCell = laststart;
+      endCell = lastend;
       drawTable();
     }
 
@@ -552,6 +578,27 @@ let prevstart = null;
     );
     drawTable();
   });
+  let prevScale = 1;
+  window.addEventListener("resize" , () => {
+    scale = window.devicePixelRatio;
+    // scale = Math.ceil(scale);
+    fixwidth = Math.ceil(fixwidth/prevScale)*scale;
+    fixheight  = Math.ceil(fixheight/prevScale)*scale;
+    id.width  = Math.ceil(id.width/prevScale)*scale;
+    id.height  = Math.ceil(id.height/prevScale)*scale;
+    // header.height *= scale;
+    header.width = Math.ceil( header.width/prevScale)*scale;
+    excel.width  = Math.ceil(excel.width/prevScale)*scale;
+    excel.height  = Math.ceil(excel.height/prevScale)*scale;
+    // a.scale(scale,scale);
+    // b.scale(scale,scale);
+    // c.scale(scale,scale);
+    drawTable();
+    console.log(id.width);
+    console.log(scale);
+    prevScale = scale;
+  });
+ 
 
   drawTable();
 });
