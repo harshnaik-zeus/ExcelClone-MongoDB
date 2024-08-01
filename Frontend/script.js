@@ -480,6 +480,8 @@ let prevstart = null;
       let y = event.offsetY;
       endCell = getCellAtPosition(x,y);
       endCell.col = rows - 1;
+      laststart = startCell;
+      lastend = endCell;
       drawTable();
       prevcell = startCell;
       startCell = null;
@@ -492,26 +494,29 @@ let prevstart = null;
   event.preventDefault();
     if (event.shiftKey) {
       if (!startCell) {
-        startCell = { col: prevstart.col, row: prevstart.row };
+        startCell = { col: laststart.col, row: laststart.row };
+        endCell = { col: lastend.col, row: lastend.row };
       }
       if (event.key == "ArrowUp") {
-        prevcell.row = Math.max(0, prevcell.row - 1);
+        endCell.row = Math.max(0, endCell.row - 1);
       } else if (event.key == "ArrowDown") {
-        prevcell.row += 1;
+        endCell.row += 1;
       } else if (event.key == "ArrowLeft") {
-        prevcell.col = Math.max(0, prevcell.col - 1);
+        endCell.col = Math.max(0, endCell.col - 1);
       } else if (event.key == "ArrowRight") {
-        prevcell.col += 1;
+        endCell.col += 1;
       }
-      endCell = prevcell;
+      // endCell = prevcell;
       drawTable();
     }  
-    else if (event.ctrlKey) {
+    else if (event.ctrlKey && isSelected) {
       if (event.key == "c" || event.key == "C") {
-        console.log("happy");
+        console.log(laststart,lastend);
       }
     }
     else {
+      startCell = { col: laststart.col, row: laststart.row };
+        endCell = { col: lastend.col, row: lastend.row };
       if (event.key == "ArrowUp") {
         prevcell.row = Math.max(0, prevcell.row - 1);
       } else if (event.key == "ArrowDown") {
@@ -523,7 +528,7 @@ let prevstart = null;
       }
       startCell = prevcell;
       endCell = prevcell;
-      prevstart = endCell;
+      // prevstart = endCell;
       drawTable();
       startCell = null;
       endCell = null; 
@@ -579,25 +584,25 @@ let prevstart = null;
     drawTable();
   });
   let prevScale = 1;
-  window.addEventListener("resize" , () => {
-    scale = window.devicePixelRatio;
-    // scale = Math.ceil(scale);
-    fixwidth = Math.ceil(fixwidth/prevScale)*scale;
-    fixheight  = Math.ceil(fixheight/prevScale)*scale;
-    id.width  = Math.ceil(id.width/prevScale)*scale;
-    id.height  = Math.ceil(id.height/prevScale)*scale;
-    // header.height *= scale;
-    header.width = Math.ceil( header.width/prevScale)*scale;
-    excel.width  = Math.ceil(excel.width/prevScale)*scale;
-    excel.height  = Math.ceil(excel.height/prevScale)*scale;
-    // a.scale(scale,scale);
-    // b.scale(scale,scale);
-    // c.scale(scale,scale);
-    drawTable();
-    console.log(id.width);
-    console.log(scale);
-    prevScale = scale;
-  });
+  // window.addEventListener("resize" , () => {
+  //   scale = window.devicePixelRatio;
+  //   // scale = Math.ceil(scale);
+  //   fixwidth = Math.ceil(fixwidth/prevScale)*scale;
+  //   fixheight  = Math.ceil(fixheight/prevScale)*scale;
+  //   id.width  = Math.ceil(id.width/prevScale)*scale;
+  //   id.height  = Math.ceil(id.height/prevScale)*scale;
+  //   // header.height *= scale;
+  //   header.width = Math.ceil( header.width/prevScale)*scale;
+  //   excel.width  = Math.ceil(excel.width/prevScale)*scale;
+  //   excel.height  = Math.ceil(excel.height/prevScale)*scale;
+  //   // a.scale(scale,scale);
+  //   // b.scale(scale,scale);
+  //   // c.scale(scale,scale);
+  //   drawTable();
+  //   console.log(id.width);
+  //   console.log(scale);
+  //   prevScale = scale;
+  // });
  
 
   drawTable();
