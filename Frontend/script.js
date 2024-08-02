@@ -182,6 +182,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     return { col, row };
   };
+
+  let marchingants = false;
+  let marchingx = -1;
+  let marchingy = -1;
+  let marchingwidth = -1;
+  let marchingheight = -1;
   const drawSelection = () => {
     if (startCell && endCell) {
       let startX = Math.min(startCell.col, endCell.col);
@@ -255,9 +261,14 @@ document.addEventListener("DOMContentLoaded", function () {
       // console.log("border");
       c.stroke();
       c.restore();
+      laststart = startCell;
+      lastend = endCell;
+      marchingants = true;
+      marchingx = startWidth - 0.5;
+      marchingy = startHeight - 0.5;
+      marchingwidth = widthSum - startWidth + 1;
+      marchingheight = heightSum - startHeight + 1;
     }
-    laststart = startCell;
-    lastend = endCell;
   };
 
 
@@ -489,7 +500,7 @@ let prevstart = null;
       idselection = false;
     }
   });
-
+  let ants = this.querySelector(".marching-ants");
   document.addEventListener("keydown", (event) => {
   event.preventDefault();
     if (event.shiftKey) {
@@ -509,9 +520,20 @@ let prevstart = null;
       // endCell = prevcell;
       drawTable();
     }  
-    else if (event.ctrlKey && isSelected) {
+    else if (event.ctrlKey) {
       if (event.key == "c" || event.key == "C") {
-        console.log(laststart,lastend);
+        ants.style.display = 'block';
+        console.log(marchingx , marchingy , marchingwidth, marchingheight);
+        ants.style.left = `${marchingx + 20}px`;
+        ants.style.top = `${marchingy + 20}px`;
+        ants.style.width = `${marchingwidth - 14}px`;
+        ants.style.height = `${marchingheight - 14}px`;
+      }
+      else if (event.key == "V" || event.key == "v") {
+        ants.style.display = 'none';
+      }
+      else if (event.key == "X" || event.key == "x") {
+        console.log("cut");
       }
     }
     else {
