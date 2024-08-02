@@ -401,6 +401,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // drawTable();
       // drawSelection();
       drawHeaders();
+      // drawSelection();
       // headselection = false;
       cellWidths[target] = org;
       let dotline = document.getElementById('dottedline');
