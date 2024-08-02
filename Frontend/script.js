@@ -273,11 +273,13 @@ document.addEventListener("DOMContentLoaded", function () {
       
     drawants();
     }
+    // console.log("123");
+    // requestAnimationFrame(drawSelection());
   };
 
   function drawants(){
     ants.style.display = 'block';
-    console.log(marchingx , marchingy , marchingwidth, marchingheight);
+    // console.log(marchingx , marchingy , marchingwidth, marchingheight);
     ants.style.left = `${marchingx + 20}px`;
     ants.style.top = `${marchingy + 20}px`;
     ants.style.width = `${marchingwidth - 14}px`;
@@ -472,9 +474,9 @@ let prevstart = null;
       dotline.style.display = 'none';
       startCell = laststart;
       endCell = lastend;
-      marchingants = true;
+      // marchingants = true;
       drawTable();
-      marchingants = false;
+      // marchingants = false;
     }
 
     if (heightresize && isIdMoving) {
@@ -488,9 +490,9 @@ let prevstart = null;
       dotline.style.display = 'none';
       startCell = laststart;
       endCell = lastend;
-      marchingants = true;
+      // marchingants = true;
       drawTable();
-      marchingants = false;
+      // marchingants = false;
     }
 
     if(headselection && !isHeadMoving) {
@@ -629,7 +631,16 @@ let prevstart = null;
     );
     drawTable();
   });
-  let prevScale = 1;
+
+  excel.addEventListener("dblclick", (event) => {
+    // marchingants = false;
+    ants.style.display = 'none';
+    drawTable();
+  });
+
+
+
+  // let prevScale = 1;
   // window.addEventListener("resize" , () => {
   //   scale = window.devicePixelRatio;
   //   // scale = Math.ceil(scale);
