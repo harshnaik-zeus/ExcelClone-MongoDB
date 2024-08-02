@@ -102,8 +102,9 @@
     }
 
     .marching-ants {
-      @include marching-ants-v2-init(6px, 2px,1s,1);
+      @include marching-ants-v2-init(6px, 2px,2s,1);
       position: absolute;
+      pointer-events: none;
       display: none;
           top: 200px;
           left: 200px;

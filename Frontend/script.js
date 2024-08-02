@@ -263,13 +263,26 @@ document.addEventListener("DOMContentLoaded", function () {
       c.restore();
       laststart = startCell;
       lastend = endCell;
-      marchingants = true;
+      // marchingants = true;
       marchingx = startWidth - 0.5;
       marchingy = startHeight - 0.5;
       marchingwidth = widthSum - startWidth + 1;
       marchingheight = heightSum - startHeight + 1;
     }
+    if (marchingants) {
+      
+    drawants();
+    }
   };
+
+  function drawants(){
+    ants.style.display = 'block';
+    console.log(marchingx , marchingy , marchingwidth, marchingheight);
+    ants.style.left = `${marchingx + 20}px`;
+    ants.style.top = `${marchingy + 20}px`;
+    ants.style.width = `${marchingwidth - 14}px`;
+    ants.style.height = `${marchingheight - 14}px`;
+  }
 
 
 
@@ -383,7 +396,9 @@ document.addEventListener("DOMContentLoaded", function () {
       startCell = laststart;
       endCell = lastend;
       // headselection = true;
-      drawTable();
+      // drawTable();
+      // drawSelection();
+      drawHeaders();
       // headselection = false;
       cellWidths[target] = org;
       let dotline = document.getElementById('dottedline');
@@ -404,7 +419,9 @@ document.addEventListener("DOMContentLoaded", function () {
         a.clearRect(0, 0, id.width, id.height);
         startCell = laststart;
         endCell = lastend;
-        drawTable();
+        // drawTable();
+        // drawSelection();
+        drawIds();
         rowHeights[rowTarget] = org;
         let dotline = document.getElementById('dottedline');
         dotline.style.display = 'block';
@@ -455,7 +472,9 @@ let prevstart = null;
       dotline.style.display = 'none';
       startCell = laststart;
       endCell = lastend;
+      marchingants = true;
       drawTable();
+      marchingants = false;
     }
 
     if (heightresize && isIdMoving) {
@@ -469,7 +488,9 @@ let prevstart = null;
       dotline.style.display = 'none';
       startCell = laststart;
       endCell = lastend;
+      marchingants = true;
       drawTable();
+      marchingants = false;
     }
 
     if(headselection && !isHeadMoving) {
@@ -478,7 +499,9 @@ let prevstart = null;
       let y = 0;
       endCell = getCellAtPosition(x,y);
       endCell.row = cols - 1;
+      // marchingants = true;
       drawTable();
+      // marchingants = false;
       prevcell = startCell;
       startCell = null;
       endCell = null;
@@ -493,7 +516,9 @@ let prevstart = null;
       endCell.col = rows - 1;
       laststart = startCell;
       lastend = endCell;
+      // marchingants = true;
       drawTable();
+      // marchingants = false;
       prevcell = startCell;
       startCell = null;
       endCell = null;
@@ -522,12 +547,11 @@ let prevstart = null;
     }  
     else if (event.ctrlKey) {
       if (event.key == "c" || event.key == "C") {
-        ants.style.display = 'block';
-        console.log(marchingx , marchingy , marchingwidth, marchingheight);
-        ants.style.left = `${marchingx + 20}px`;
-        ants.style.top = `${marchingy + 20}px`;
-        ants.style.width = `${marchingwidth - 14}px`;
-        ants.style.height = `${marchingheight - 14}px`;
+        startCell = laststart;
+        endCell = lastend;
+        marchingants = true;
+        drawTable();
+        marchingants = false;
       }
       else if (event.key == "V" || event.key == "v") {
         ants.style.display = 'none';
