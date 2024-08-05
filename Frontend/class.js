@@ -48,26 +48,27 @@ class ExcelSheet {
       " ",
     ];
     this.data = [
-      "ncooper@hotmail.com",
-      "Kristen Robinson",
-      "Jordan",
-      "North Dakota",
-      "West Valerieland",
-      "(187)741-6224x24308",
-      "2002 Seth Roads Suite 553",
-      "Apt. 132",
-      "1973-07-15",
-      "92,890.00",
-      "128,252.00",
-      "123,602.00",
-      "148,513.00",
-      "78,362.00",
-      " ",
-      " ",
-      " ",
-      " ",
-      " ",
-      " ",
+      ["ncooper", "Kristen Robinson", "Jordan", "North Dakota", "West Valerielan", "(187) 741-", "2002 Seth ", "Apt. 132", "1973-07-15", "92,890.00", "128,252.00", "123,602.00", "148,513.00", "78,362.00", " ", " ", " ", " ", " ", " "],
+      ["john.doe", "John Doe", "USA", "California", "Los Angeles", "(555) 123-4567", "123 Main St", "Apt. 101", "1980-05-12", "45,000.00", "50,000.00", "55,000.00", "60,000.00", "40,000.00", " ", " ", " ", " ", " ", " "],
+      ["jane.smith", "Jane Smith", "Canada", "Ontario", "Toronto", "(555) 765-4321", "456 Maple Ave", "Apt. 202", "1990-08-23", "60,000.00", "65,000.00", "70,000.00", "75,000.00", "50,000.00", " ", " ", " ", " ", " ", " "],
+      ["alice.jones", "Alice Jones", "UK", "England", "London", "(555) 987-6543", "789 Oak St", "Apt. 303", "1985-11-30", "70,000.00", "75,000.00", "80,000.00", "85,000.00", "60,000.00", " ", " ", " ", " ", " ", " "],
+      ["bob.brown", "Bob Brown", "Australia", "New South", "Sydney", "(555) 321-0987", "321 Pine Rd", "Apt. 404", "1978-02-14", "80,000.00", "85,000.00", "90,000.00", "95,000.00", "70,000.00", " ", " ", " ", " ", " ", " "],
+      ["charlie.davis", "Charlie Davis", "Germany", "Bavaria", "Munich", "(555) 654-3210", "654 Cedar Blvd", "Apt. 505", "1965-09-19", "90,000.00", "95,000.00", "100,000.00", "105,000.00", "80,000.00", " ", " ", " ", " ", " ", " "],
+      ["danielle.white", "Danielle White", "France", "Île-de-France", "Paris", "(555) 789-0123", "987 Birch Ln", "Apt. 606", "1995-06-25", "100,000.00", "105,000.00", "110,000.00", "115,000.00", "90,000.00", " ", " ", " ", " ", " ", " "],
+      ["edward.green", "Edward Green", "Italy", "Lazio", "Rome", "(555) 321-7654", "321 Spruce Way", "Apt. 707", "1972-04-04", "110,000.00", "115,000.00", "120,000.00", "125,000.00", "100,000.00", " ", " ", " ", " ", " ", " "],
+      ["fiona.harris", "Fiona Harris", "Spain", "Catalonia", "Barcelona", "(555) 987-0123", "123 Willow Dr", "Apt. 808", "1988-12-10", "120,000.00", "125,000.00", "130,000.00", "135,000.00", "110,000.00", " ", " ", " ", " ", " ", " "],
+      ["george.clark", "George Clark", "Netherlands", "North Holland", "Amsterdam", "(555) 123-0987", "456 Elm Cir", "Apt. 909", "1992-03-17", "130,000.00", "135,000.00", "140,000.00", "145,000.00", "120,000.00", " ", " ", " ", " ", " ", " "],
+      ["hannah.lee", "Hannah Lee", "Japan", "Tokyo", "Tokyo", "(555) 432-5678", "789 Palm Ct", "Apt. 1010", "1983-07-22", "140,000.00", "145,000.00", "150,000.00", "155,000.00", "130,000.00", " ", " ", " ", " ", " ", " "],
+      ["ian.wright", "Ian Wright", "Brazil", "São Paulo", "São Paulo", "(555) 678-1234", "321 Magnolia Ter", "Apt. 1111", "1999-05-09", "150,000.00", "155,000.00", "160,000.00", "165,000.00", "140,000.00", " ", " ", " ", " ", " ", " "],
+      ["julia.martin", "Julia Martin", "South Africa", "Gauteng", "Johannesburg", "(555) 789-6543", "654 Cypress St", "Apt. 1212", "1977-11-05", "160,000.00", "165,000.00", "170,000.00", "175,000.00", "150,000.00", " ", " ", " ", " ", " ", " "],
+      ["kevin.miller", "Kevin Miller", "India", "Maharashtra", "Mumbai", "(555) 321-4321", "987 Fir Ln", "Apt. 1313", "1968-08-14", "170,000.00", "175,000.00", "180,000.00", "185,000.00", "160,000.00", " ", " ", " ", " ", " ", " "],
+      ["linda.thomas", "Linda Thomas", "China", "Beijing", "Beijing", "(555) 654-8765", "123 Poplar Ave", "Apt. 1414", "1984-02-28", "180,000.00", "185,000.00", "190,000.00", "195,000.00", "170,000.00", " ", " ", " ", " ", " ", " "],
+      ["michael.scott", "Michael Scott", "Mexico", "Mexico City", "Mexico City", "(555) 876-5432", "456 Redwood", "Apt. 1515", "1991-10-21", "190,000.00", "195,000.00", "200,000.00", "205,000.00", "180,000.00", " ", " ", " ", " ", " ", " "],
+      ["natalie.king", "Natalie King", "Argentina", "Buenos Aires", "Buenos Aires", "(555) 123-4567", "789 Cedar Blvd", "Apt. 1616", "1970-01-13", "200,000.00", "205,000.00", "210,000.00", "215,000.00", "190,000.00", " ", " ", " ", " ", " ", " "],
+      ["oliver.taylor", "Oliver Taylor", "Russia", "Moscow", "Moscow", "(555) 987-6543", "321 Birch Rd", "Apt. 1717", "1987-04-30", "210,000.00", "215,000.00", "220,000.00", "225,000.00", "200,000.00", " ", " ", " ", " ", " ", " "],
+      ["paula.walker", "Paula Walker", "Italy", "Lazio", "Rome", "(555) 321-7654", "123 Spruce Blvd", "Apt. 1818", "1975-09-15", "220,000.00", "225,000.00", "230,000.00", "235,000.00", "210,000.00", " ", " ", " ", " ", " ", " "],
+      ["quentin.baker", "Quentin Baker", "Spain", "Catalonia", "Barcelona", "(555) 678-1234", "456 Pine Cir", "Apt. 1919", "1996-07-02", "230,000.00", "235,000.00", "240,000.00", "245,000.00", "220,000.00", " ", " ", " ", " ", " ", " "],
+      ["rachel.martinez", "Rachel Martinez", "USA", "New York", "New York", "(555) 789-0123", "789 Maple Dr", "Apt. 2020", "1982-06-11", "240,000.00", "245,000.00", "250,000.00", "255,000.00", "230,000.00", " ", " ", " ", " ", " ", " "]
     ];
 
     /**
@@ -128,6 +129,7 @@ class ExcelSheet {
     document.addEventListener("keyup", this.handleKeyUp.bind(this));
     this.header.addEventListener("dblclick", this.handleHeaderDoubleClick.bind(this));
     this.excel.addEventListener("dblclick", this.handleExcelDoubleClick.bind(this));
+    window.addEventListener("resize", this.handleDevicePixelRatio.bind(this));
   }
 
   /**
@@ -203,14 +205,26 @@ class ExcelSheet {
     for (let index = 0; index <= this.rowHeights.length; index++) {
       this.c.save();
       this.c.beginPath();
+      this.c.fillStyle = "#e3e3e3";
       this.c.moveTo(0, startY);
       this.c.lineTo(this.excelwidth, startY);
       this.c.lineWidth = 0.3;
-      this.c.fillStyle = "#e3e3e3";
       startY += this.rowHeights[index];
       this.c.stroke();
       this.c.restore();
     }
+
+    let y = 15;
+    for (let i = 0; i < 20; i++) {
+      let x = 5;
+      for (let j = 0; j < 20; j++) {
+        // this.c.clip();
+        this.c.fillText(this.data[i][j], x, y);
+        x += this.cellWidths[j];
+      }
+      y += this.rowHeights[i];
+    }
+    // this.c.clip();
   }
 
   drawTable() {
@@ -706,15 +720,21 @@ class ExcelSheet {
     let x = event.clientX - rect.left;
     let y = event.clientY - rect.top;
     let dist = this.getLeftandTop(x, y);
-    console.log(this.getLeftandTop(x, y));
+    // console.log(this.getLeftandTop(x, y));
+    let datacell = this.getCellAtPosition(x, y);
     let ipbox = document.getElementById('ipbox');
     ipbox.style.display = 'block';
     ipbox.style.border = 'none';
     ipbox.style.left = `${dist.left + 21}px`;
     ipbox.style.top = `${dist.top + 21}px`;
     ipbox.style.width = `${dist.width - 5}px`;
-    ipbox.style.height = `${dist.height - 4}px`;
+    ipbox.style.height = `${dist.height - 3}px`;
     ipbox.focus();
+    ipbox.value = this.data[datacell.row][datacell.col];
+    // let word = ipbox.value;
+    console.log(ipbox.value);
+    ipbox.value = " ";
+
   }
 
   handleExcelDoubleClick(event) {
@@ -723,7 +743,22 @@ class ExcelSheet {
     event.preventDefault();
     this.drawTable();
   }
+
+  handleDevicePixelRatio(event) {
+    console.log("hello");
+    // this.scale = window.devicePixelRatio;
+    // console.log(this.scale);
+
+    // this.container = document.getElementById("container");
+    // // this.container.scale(this.scale, this.scale);
+    // this.a.scale(this.scale, this.scale);
+    // this.b.scale(this.scale, this.scale);
+    // this.c.scale(this.scale, this.scale);
+
+    // this.drawTable();
+  }
 }
+
 
 /**
  * Load excel sheet on Document Load
