@@ -23,25 +23,63 @@ class ExcelSheet {
 
     /**
      * Data call from database
+     *   mock data -->
      */
     this.topics = [
-      "Email", "Name", "Country", "State", "City", "Phone", "Add1", "Add2", "DOB",
-      "2019-20", "2020-21", "2021-22", "2022-23", "2023-24",
-      " ", " ", " ", " ", " ", " "
+      "Email",
+      "Name",
+      "Country",
+      "State",
+      "City",
+      "Phone",
+      "Add1",
+      "Add2",
+      "DOB",
+      "2019-20",
+      "2020-21",
+      "2021-22",
+      "2022-23",
+      "2023-24",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
     ];
     this.data = [
-      "ncooper@hotmail.com", "Kristen Robinson", "Jordan", "North Dakota", "West Valerieland",
-      "(187)741-6224x24308", "2002 Seth Roads Suite 553", "Apt. 132", "1973-07-15",
-      "92,890.00", "128,252.00", "123,602.00", "148,513.00", "78,362.00",
-      " ", " ", " ", " ", " ", " "
+      "ncooper@hotmail.com",
+      "Kristen Robinson",
+      "Jordan",
+      "North Dakota",
+      "West Valerieland",
+      "(187)741-6224x24308",
+      "2002 Seth Roads Suite 553",
+      "Apt. 132",
+      "1973-07-15",
+      "92,890.00",
+      "128,252.00",
+      "123,602.00",
+      "148,513.00",
+      "78,362.00",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
+      " ",
     ];
+
+    /**
+     * array of colomns widths and row heights
+     */
     this.cellWidths = Array(this.topics.length).fill(this.cellWidth);
     this.rowHeights = Array(this.cols).fill(this.cellHeight);
+
+    // marching ants flag
     this.marchingants = false;
-    this.marchingx = -1;
-    this.marchingy = -1;
-    this.marchingwidth = -1;
-    this.marchingheight = -1;
+
+    //selection flags
     this.isSelected = false;
     this.widthresize = false;
     this.heightresize = false;
@@ -68,7 +106,6 @@ class ExcelSheet {
     this.drawTable();
   }
 
-
   initializeCanvas() {
     this.id.width = this.fixheight;
     this.id.height = this.excelheight;
@@ -93,6 +130,9 @@ class ExcelSheet {
     this.excel.addEventListener("dblclick", this.handleExcelDoubleClick.bind(this));
   }
 
+  /**
+   * Draw top Header
+   */
   drawHeaders() {
     let start = 0.5;
     this.b.textAlign = "center";
@@ -112,6 +152,9 @@ class ExcelSheet {
     }
   }
 
+  /**
+   * Draw side row numbers
+   */
   drawIds() {
     this.a.textAlign = "center";
     this.a.textBaseline = "middle";
@@ -124,12 +167,19 @@ class ExcelSheet {
       this.a.moveTo(0, start);
       this.a.lineTo(this.fixheight, start);
       start += this.rowHeights[i];
-      this.a.fillText(i + 1, this.fixheight / 2, start - this.rowHeights[i] / 2);
+      this.a.fillText(
+        i + 1,
+        this.fixheight / 2,
+        start - this.rowHeights[i] / 2
+      );
       this.a.stroke();
       this.a.restore();
     }
   }
 
+  /**
+   * Draw main excel lines and data
+   */
   drawExcel() {
     this.c.textAlign = "left";
     this.c.textBaseline = "middle";
@@ -174,8 +224,8 @@ class ExcelSheet {
   }
 
   /**
-   * @param {x-position of event} x 
-   * @param {y-position of event} y 
+   * @param {x-position of event} x
+   * @param {y-position of event} y
    * @returns cell-position
    */
 
@@ -195,9 +245,47 @@ class ExcelSheet {
     return { col, row };
   }
 
+  /**
+   * 
+   * @param {Event} x 
+   * @param {Event} y 
+   * @returns distance from left and top
+   */
+  getLeftandTop(x, y) {
+    let left = 0;
+    let top = 0;
+    let sum1 = 0;
+    let sum2 = 0;
+    let width = -1;
+    let height = -1;
+    for (let index = 0; index < this.cellWidths.length; index++) {
+      if (sum1 + this.cellWidths[index] <= x) {
+        sum1 += this.cellWidths[index];
+        continue;
+      }
+      else {
+        left = sum1;
+        width = this.cellWidths[index];
+        break;
+      }
+    }
+    for (let index = 0; index < this.rowHeights.length; index++) {
+      if (sum2 + this.rowHeights[index] <= y) {
+        sum2 += this.rowHeights[index];
+        continue;
+      }
+      else {
+        top = sum2;
+        height = this.rowHeights[index];
+        break;
+      }
+    }
+    return { left, top, width, height };
+  }
 
   /**
-   * Draws Big selection green box behind all three canvas and adds rect with a border to give selection effect
+   * @description Draws Big selection green box behind all three canvas and adds rect with a border to give selection effect
+   * Draws marching ants around selection
    */
 
   drawSelection() {
@@ -224,7 +312,12 @@ class ExcelSheet {
         startWidth = widthSum;
         for (let col = startX; col <= endX; col++) {
           this.c.fillStyle = "#e6ffe6";
-          this.c.fillRect(widthSum, heightSum, this.cellWidths[col], this.rowHeights[row]);
+          this.c.fillRect(
+            widthSum,
+            heightSum,
+            this.cellWidths[col],
+            this.rowHeights[row]
+          );
           widthSum += this.cellWidths[col];
         }
         heightSum += this.rowHeights[row];
@@ -239,7 +332,12 @@ class ExcelSheet {
       } else {
         this.b.fillStyle = "#caead8";
       }
-      this.b.fillRect(startWidth + 0.5, 0.5, widthSum - startWidth, this.cellHeight);
+      this.b.fillRect(
+        startWidth + 0.5,
+        0.5,
+        widthSum - startWidth,
+        this.cellHeight
+      );
       this.b.stroke();
       this.b.restore();
 
@@ -250,7 +348,12 @@ class ExcelSheet {
       } else {
         this.a.fillStyle = "#caead8";
       }
-      this.a.fillRect(0.5, startHeight + 0.5, this.cellWidth, heightSum - startHeight);
+      this.a.fillRect(
+        0.5,
+        startHeight + 0.5,
+        this.cellWidth,
+        heightSum - startHeight
+      );
       this.a.stroke();
       this.a.restore();
 
@@ -268,23 +371,37 @@ class ExcelSheet {
 
       this.laststart = this.startCell;
       this.lastend = this.endCell;
-      this.marchingx = startWidth - 0.5;
-      this.marchingy = startHeight - 0.5;
-      this.marchingwidth = widthSum - startWidth + 1;
-      this.marchingheight = heightSum - startHeight + 1;
+      if (this.marchingants) {
+        this.drawants(
+          startWidth - 0.5 + 20,
+          startHeight - 0.5 + 20,
+          widthSum - startWidth + 1 - 14,
+          heightSum - startHeight + 1 - 14
+        );
+      }
     }
-    if (this.marchingants) {
-      this.drawants();
-    }
+    // this.handleTextbox(this.start);
   }
 
-  drawants() {
-    this.ants.style.display = 'block';
-    this.ants.style.left = `${this.marchingx + 20}px`;
-    this.ants.style.top = `${this.marchingy + 20}px`;
-    this.ants.style.width = `${this.marchingwidth - 14}px`;
-    this.ants.style.height = `${this.marchingheight - 14}px`;
+  /**
+   * @param {distance from left} left
+   * @param {distance from top} top
+   * @param {width of div} width
+   * @param {height of div} height
+   * @returns Displays div of marching ants
+   */
+  drawants(left, top, width, height) {
+    this.ants.style.display = "block";
+    this.ants.style.left = `${left}px`;
+    this.ants.style.top = `${top}px`;
+    this.ants.style.width = `${width}px`;
+    this.ants.style.height = `${height}px`;
   }
+
+  /**
+   * @param {PointerEvent} event Down
+   * @type {EventListener} for excel to start range selection
+   */
 
   handleExcelPointerDown(event) {
     this.isSelected = true;
@@ -295,15 +412,21 @@ class ExcelSheet {
     let y = event.clientY - rect.top;
     this.startCell = this.getCellAtPosition(x, y);
     this.endCell = this.startCell;
+    this.handleTextbox(event);
     this.drawTable();
   }
 
+  /**
+   * @type {EventListener} for header selection / Resizing
+   * @param {PointerEvent} event Down
+   * @returns target index
+   */
   handleHeaderPointerDown(event) {
     this.isSelected = false;
     this.widthresize = true;
     this.heightresize = false;
-    let dotline = document.getElementById('dottedline');
-    dotline.style.display = 'none';
+    let dotline = document.getElementById("dottedline");
+    dotline.style.display = "none";
     this.startpoint = event.offsetX;
     let sum = 0;
     for (let index = 0; index < this.cellWidths.length; index++) {
@@ -321,12 +444,17 @@ class ExcelSheet {
     }
   }
 
+  /**
+   * @type {EventListener} for id selection / Resizing
+   * @param {PointerEvent} event Down
+   * @returns target index
+   */
   handleIdPointerDown(event) {
     this.isSelected = false;
     this.widthresize = false;
     this.heightresize = true;
-    let dotline = document.getElementById('dottedline');
-    dotline.style.display = 'none';
+    let dotline = document.getElementById("dottedline");
+    dotline.style.display = "none";
     const rect = this.excel.getBoundingClientRect();
     this.rowStartPoint = event.clientY - rect.top;
     let sum = 0;
@@ -344,6 +472,11 @@ class ExcelSheet {
       }
     }
   }
+
+  /**
+   * @type {EventListener} on Document
+   * @param {PointerEvent} event Move
+   */
 
   handlePointerMove(event) {
     if (this.isSelected) {
@@ -367,12 +500,12 @@ class ExcelSheet {
       this.endCell = this.lastend;
       this.drawHeaders();
       this.cellWidths[this.target] = org;
-      let dotline = document.getElementById('dottedline');
-      dotline.style.display = 'block';
+      let dotline = document.getElementById("dottedline");
+      dotline.style.display = "block";
       dotline.style.left = `${event.clientX - rect.x + 20 + this.surplus}px`;
-      dotline.style.top = '20px';
-      dotline.style.borderTop = 'none';
-      dotline.style.borderLeft = '2px dotted #999';
+      dotline.style.top = "20px";
+      dotline.style.borderTop = "none";
+      dotline.style.borderLeft = "2px dotted #999";
     }
 
     if (this.heightresize && this.isIdMoving) {
@@ -386,12 +519,12 @@ class ExcelSheet {
       this.endCell = this.lastend;
       this.drawIds();
       this.rowHeights[this.rowTarget] = org;
-      let dotline = document.getElementById('dottedline');
-      dotline.style.display = 'block';
-      dotline.style.left = '20px';
+      let dotline = document.getElementById("dottedline");
+      dotline.style.display = "block";
+      dotline.style.left = "20px";
       dotline.style.top = `${event.clientY - rect.y + 20 + this.idsurplus}px`;
-      dotline.style.borderTop = '2px dotted #999';
-      dotline.style.borderLeft = 'none';
+      dotline.style.borderTop = "2px dotted #999";
+      dotline.style.borderLeft = "none";
     }
 
     if (this.headselection && !this.isHeadMoving) {
@@ -413,6 +546,11 @@ class ExcelSheet {
     }
   }
 
+  /**
+   * @type {EventListener} Pointer Up on document
+   * @param {PointerEvent} event Up
+   */
+
   handlePointerUp(event) {
     if (this.isSelected) {
       this.prevcell = this.endCell;
@@ -428,8 +566,8 @@ class ExcelSheet {
       if (this.cellWidths[this.target] + diff <= 40) diff = 0;
       this.cellWidths[this.target] += diff;
       this.isHeadMoving = false;
-      let dotline = document.getElementById('dottedline');
-      dotline.style.display = 'none';
+      let dotline = document.getElementById("dottedline");
+      dotline.style.display = "none";
       this.startCell = this.laststart;
       this.endCell = this.lastend;
       this.drawTable();
@@ -442,8 +580,8 @@ class ExcelSheet {
       if (this.rowHeights[this.rowTarget] + diff <= 20) diff = 0;
       this.rowHeights[this.rowTarget] += diff;
       this.isIdMoving = false;
-      let dotline = document.getElementById('dottedline');
-      dotline.style.display = 'none';
+      let dotline = document.getElementById("dottedline");
+      dotline.style.display = "none";
       this.startCell = this.laststart;
       this.endCell = this.lastend;
       this.drawTable();
@@ -478,9 +616,14 @@ class ExcelSheet {
     }
   }
 
+  /**
+   * @type {EventListener}
+   * @param {KeyboardEvent} event Key Down
+   */
+
   handleKeyDown(event) {
-    event.preventDefault();
     if (event.shiftKey) {
+      event.preventDefault();
       if (!this.startCell) {
         this.startCell = { col: this.laststart.col, row: this.laststart.row };
         this.endCell = { col: this.lastend.col, row: this.lastend.row };
@@ -503,13 +646,13 @@ class ExcelSheet {
         this.drawTable();
         this.marchingants = false;
       } else if (event.key == "V" || event.key == "v") {
-        this.ants.style.display = 'none';
+        this.ants.style.display = "none";
       } else if (event.key == "X" || event.key == "x") {
         console.log("cut");
       }
     } else {
       this.startCell = { col: this.laststart.col, row: this.laststart.row };
-      this.endCell = { col: this.lastend.col, row: this.lastend.row };
+      this.endCell = { col: this.laststart.col, row: this.laststart.row };
       if (event.key == "ArrowUp") {
         this.prevcell.row = Math.max(0, this.prevcell.row - 1);
       } else if (event.key == "ArrowDown") {
@@ -527,6 +670,11 @@ class ExcelSheet {
     }
   }
 
+  /**
+   * @type {EventListener}
+   * @param {KeyboardEvent} event Key Up
+   */
+
   handleKeyUp(event) {
     if (!event.shiftKey) {
       this.startCell = null;
@@ -538,7 +686,10 @@ class ExcelSheet {
     let h = event.clientX;
     let col = 0;
     let widthSum = 0;
-    while (h > widthSum + this.cellWidths[col] && col < this.cellWidths.length - 1) {
+    while (
+      h > widthSum + this.cellWidths[col] &&
+      col < this.cellWidths.length - 1
+    ) {
       widthSum += this.cellWidths[col];
       col++;
     }
@@ -550,13 +701,33 @@ class ExcelSheet {
     this.drawTable();
   }
 
+  handleTextbox(event) {
+    const rect = this.excel.getBoundingClientRect();
+    let x = event.clientX - rect.left;
+    let y = event.clientY - rect.top;
+    let dist = this.getLeftandTop(x, y);
+    console.log(this.getLeftandTop(x, y));
+    let ipbox = document.getElementById('ipbox');
+    ipbox.style.display = 'block';
+    ipbox.style.border = 'none';
+    ipbox.style.left = `${dist.left + 21}px`;
+    ipbox.style.top = `${dist.top + 21}px`;
+    ipbox.style.width = `${dist.width - 5}px`;
+    ipbox.style.height = `${dist.height - 4}px`;
+    ipbox.focus();
+  }
+
   handleExcelDoubleClick(event) {
-    this.ants.style.display = 'none';
+    this.ants.style.display = "none";
+    this.handleTextbox(event);
+    event.preventDefault();
     this.drawTable();
   }
 }
 
+/**
+ * Load excel sheet on Document Load
+ */
 document.addEventListener("DOMContentLoaded", function () {
   new ExcelSheet();
 });
-      
