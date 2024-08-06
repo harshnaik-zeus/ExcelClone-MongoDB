@@ -22,7 +22,7 @@ class ExcelSheet {
     this.lastend = null;
     this.start = 1;
 
-    this.word = "hello";
+    // this.word = "hello";
 
     /**
      * Data call from database
@@ -245,8 +245,8 @@ class ExcelSheet {
     /**
      * array of colomns widths and row heights
      */
-    this.cellWidths = Array(this.topics.length).fill(this.cellWidth);
-    this.rowHeights = Array(this.cols).fill(this.cellHeight);
+    this.cellWidths = Array(1000).fill(this.cellWidth);
+    this.rowHeights = Array(1000).fill(this.cellHeight);
 
     // marching ants flag
     this.marchingants = false;
@@ -272,6 +272,8 @@ class ExcelSheet {
     this.idsurplus = 0;
     this.prevstart = null;
     this.ants = document.querySelector(".marching-ants");
+    this.bargraph = document.getElementById("bar");
+    this.linegraph = document.getElementById("line");
 
     this.initializeCanvas();
     this.addEventListeners();
@@ -303,6 +305,8 @@ class ExcelSheet {
     window.addEventListener("resize", this.handleDevicePixelRatio.bind(this));
     this.container.addEventListener("scroll", this.handleViewPort.bind(this));
     ipbox.addEventListener("keydown", this.SaveData.bind(this));
+    this.bargraph.addEventListener("click", this.CreateBarGraph.bind(this));
+    this.linegraph.addEventListener("click", this.CreateLineGraph.bind(this));
   }
 
   /**
@@ -390,7 +394,7 @@ class ExcelSheet {
     let y = 15;
     for (let i = s; i <= s + 37; i++) {
       let x = 5;
-      for (let j = 0; j < 20; j++) {
+      for (let j = 0; j < 16; j++) {
         // this.c.clip();
         this.c.fillText(this.data[i][j], x, y);
         x += this.cellWidths[j];
@@ -401,6 +405,7 @@ class ExcelSheet {
   }
 
   drawTable(x) {
+    x = Math.max(x, 1);
     this.a.clearRect(0, 0, this.id.width, this.id.height);
     this.b.clearRect(0, 0, this.header.width, this.header.height);
     this.c.clearRect(0, 0, this.excel.width, this.excel.height);
@@ -826,6 +831,7 @@ class ExcelSheet {
       }
       this.drawTable(this.start);
     } else if (event.ctrlKey) {
+      event.preventDefault();
       if (event.key == "c" || event.key == "C") {
         this.startCell = this.laststart;
         this.endCell = this.lastend;
@@ -838,10 +844,12 @@ class ExcelSheet {
         // console.log("cut");
       }
     } else if (event.key === "Enter") {
+      event.preventDefault();
       console.log("hello");
       // this.data[]
     }
     else {
+      event.preventDefault();
       this.startCell = { col: this.laststart.col, row: this.laststart.row };
       this.endCell = { col: this.laststart.col, row: this.laststart.row };
       if (event.key == "ArrowUp") {
@@ -939,22 +947,107 @@ class ExcelSheet {
   }
 
   handleViewPort(event) {
-    if (this.container.scrollTop) {
-      this.start += 5;
-      this.drawTable(this.start);
-      console.log("yes");
+    // if (this.container.scrollY) {
+    this.start += 5;
+    this.drawTable(this.start);
+    // console.log("yes");
+    // }
+    // else {
+    //   this.start -= 5;
+    //   this.drawTable(this.start);
+    //   console.log("no");
+    // }
 
-    }
-    else {
-      this.start -= 5;
-      this.drawTable(this.start);
-      console.log("no");
-    }
+    // if (this.container.scrollTop + this.container.offsetHeight >= this.container.scrollHeight) {
+    //   console.log("end");
+    // }
 
-    if (this.container.scrollTop + this.container.offsetHeight >= this.container.scrollHeight) {
-      console.log("end");
-    }
   }
+
+  // setPorperties(graphdiv, graphcanvas) {
+  //   graphdiv.style.width = '100px';
+  //   graphdiv.style.height = '100px';
+  //   graphdiv.style.top = '500px';
+  //   graphdiv.style.width = '500px';
+  //   graphdiv.style.background = 'black';
+  // }
+
+  CreateBarGraph(event) {
+    let graphcanvas = document.createElement("canvas");
+    let graphdiv = document.createElement("div");
+
+    if (this.container) this.container.append(graphdiv);
+    graphdiv.append(graphcanvas);
+
+    // setPorperties(graphdiv, graphcanvas);
+    graphdiv.style.position = 'absolute';
+    graphdiv.style.display = 'block';
+    graphdiv.style.width = '480px';
+    graphdiv.style.height = '288px';
+    graphdiv.style.top = '100px';
+    graphdiv.style.left = '100px';
+    graphdiv.style.background = 'white';
+    graphdiv.style.zIndex = '100';
+
+    new Chart(graphcanvas, {
+      type: 'bar',
+      data: {
+        labels: ['Bob', 'Charlie', 'danielle', 'edward', 'fiona', 'george'],
+        datasets: [{
+          label: '# of Votes',
+          data: [80.000, 90.000, 110.000, 120.000, 150.000, 20.000],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+  }
+
+  CreateLineGraph(event) {
+    let linecanvas = document.createElement("canvas");
+    let linediv = document.createElement("div");
+
+    if (this.container) this.container.append(linediv);
+    linediv.append(linecanvas);
+
+    // setPorperties(graphdiv, graphcanvas);
+    linediv.style.position = 'absolute';
+    linediv.style.display = 'block';
+    linediv.style.width = '480px';
+    linediv.style.height = '288px';
+    linediv.style.top = '100px';
+    linediv.style.left = '600px';
+    linediv.style.background = 'white';
+    linediv.style.zIndex = '100';
+
+    new Chart(linecanvas, {
+      type: 'line',
+      data: {
+        labels: ['Bob', 'Charlie', 'danielle', 'edward', 'fiona', 'george'],
+        datasets: [{
+          label: '# of Votes',
+          data: [80.000, 90.000, 110.000, 120.000, 150.000, 20.000],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+  }
+
 
 
 }
