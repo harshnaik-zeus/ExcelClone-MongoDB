@@ -7,6 +7,7 @@ class ExcelSheet {
     this.header = document.getElementById("canvas2");
     this.excel = document.getElementById("canvas3");
     this.container = document.getElementById("container");
+    this.infinitediv = document.getElementById("mainbig");
     this.scale = window.devicePixelRatio;
     this.fixheight = 20;
     this.fixwidth = 100;
@@ -242,6 +243,7 @@ class ExcelSheet {
       ["rachel.martinez", "Rachel Martinez", "USA", "New York", "New York", "(555) 789-0123", "789 Maple Dr", "Apt. 2020", "1982-06-11", "240,000.00", "245,000.00", "250,000.00", "255,000.00", "230,000.00", " ", " ", " ", " ", " ", " "]
     ];
 
+
     /**
      * array of colomns widths and row heights
      */
@@ -304,10 +306,10 @@ class ExcelSheet {
     this.header.addEventListener("dblclick", this.handleHeaderDoubleClick.bind(this));
     this.excel.addEventListener("dblclick", this.handleExcelDoubleClick.bind(this));
     window.addEventListener("resize", this.handleDevicePixelRatio.bind(this));
-    this.container.addEventListener("scroll", this.handleViewPort.bind(this));
     ipbox.addEventListener("keydown", this.SaveData.bind(this));
     this.bargraph.addEventListener("click", this.CreateBarGraph.bind(this));
     this.linegraph.addEventListener("click", this.CreateLineGraph.bind(this));
+    this.infinitediv.addEventListener("scroll", this.handleViewPort.bind(this));
   }
 
   /**
@@ -809,6 +811,16 @@ class ExcelSheet {
     }
   }
 
+
+  CopyPaste(startcell, endcell, x) {
+    if (x == "copy") {
+      console.log("copy");
+    }
+    else {
+      console.log("paste");
+    }
+  }
+
   /**
    * @type {EventListener}
    * @param {KeyboardEvent} event Key Down
@@ -837,10 +849,13 @@ class ExcelSheet {
         this.startCell = this.laststart;
         this.endCell = this.lastend;
         this.marchingants = true;
+        this.CopyPaste(this.startCell, this.endCell, "copy");
         this.drawTable(this.start);
         this.marchingants = false;
       } else if (event.key == "V" || event.key == "v") {
         this.ants.style.display = "none";
+        this.CopyPaste(this.startCell, this.endCell, "paste");
+        this.drawTable(this.start);
       } else if (event.key == "X" || event.key == "x") {
         // console.log("cut");
       }
@@ -911,26 +926,26 @@ class ExcelSheet {
    */
 
   handleTextbox(event) {
-    const rect = this.excel.getBoundingClientRect();
-    let x = event.clientX - rect.left;
-    let y = event.clientY - rect.top;
-    let dist = this.getLeftandTop(x, y);
-    // console.log(this.getLeftandTop(x, y));
-    let datacell = this.getCellAtPosition(x, y);
-    let ipbox = document.getElementById('ipbox');
-    ipbox.style.display = 'block';
-    ipbox.style.border = 'none';
-    ipbox.style.left = `${dist.left + 21}px`;
-    ipbox.style.top = `${dist.top + 21}px`;
-    ipbox.style.width = `${dist.width - 5}px`;
-    ipbox.style.height = `${dist.height - 3}px`;
-    this.word = ipbox.value;
-    ipbox.focus();
+    // const rect = this.excel.getBoundingClientRect();
+    // let x = event.clientX - rect.left;
+    // let y = event.clientY - rect.top;
+    // let dist = this.getLeftandTop(x, y);
+    // // console.log(this.getLeftandTop(x, y));
+    // let datacell = this.getCellAtPosition(x, y);
+    // let ipbox = document.getElementById('ipbox');
+    // ipbox.style.display = 'block';
+    // ipbox.style.border = 'none';
+    // ipbox.style.left = `${dist.left + 21}px`;
+    // ipbox.style.top = `${dist.top + 21}px`;
+    // ipbox.style.width = `${dist.width - 5}px`;
+    // ipbox.style.height = `${dist.height - 3}px`;
+    // this.word = ipbox.value;
+    // ipbox.focus();
 
   }
   SaveData(event) {
-    this.data[15][5] = this.word;
-    this.drawTable(this.start);
+    // this.data[15][5] = this.word;
+    // this.drawTable(this.start);
   }
 
   /**
@@ -965,30 +980,12 @@ class ExcelSheet {
    */
 
   handleViewPort(event) {
-    // if (this.container.scrollY) {
-    this.start += 5;
+    // console.log(this.infinitediv.scrollTop);
+    let change = this.infinitediv.scrollTop;
+    this.start = Math.floor(change / 80);
     this.drawTable(this.start);
-    // console.log("yes");
-    // }
-    // else {
-    //   this.start -= 5;
-    //   this.drawTable(this.start);
-    //   console.log("no");
-    // }
-
-    // if (this.container.scrollTop + this.container.offsetHeight >= this.container.scrollHeight) {
-    //   console.log("end");
-    // }
-
   }
 
-  // setPorperties(graphdiv, graphcanvas) {
-  //   graphdiv.style.width = '100px';
-  //   graphdiv.style.height = '100px';
-  //   graphdiv.style.top = '500px';
-  //   graphdiv.style.width = '500px';
-  //   graphdiv.style.background = 'black';
-  // }
 
   MakeDragable(graphdiv) {
     let x, y;
@@ -1004,7 +1001,7 @@ class ExcelSheet {
     }
 
     function Divdown(event) {
-      this.chartselect = graphdiv;
+      // this.chartselect = graphdiv;
       const rect = graphdiv.getBoundingClientRect();
       x = event.clientX - rect.left;
       y = event.clientY - rect.top;
@@ -1030,7 +1027,7 @@ class ExcelSheet {
     let graphcanvas = document.createElement("canvas");
     let graphdiv = document.createElement("div");
 
-    if (this.container) this.container.append(graphdiv);
+    if (this.infinitediv) this.infinitediv.append(graphdiv);
     graphdiv.append(graphcanvas);
 
     // setPorperties(graphdiv, graphcanvas);
@@ -1038,6 +1035,8 @@ class ExcelSheet {
     graphdiv.style.display = 'block';
     graphdiv.style.width = '480px';
     graphdiv.style.height = '288px';
+    // graphcanvas.style.width = '480px';
+    // graphcanvas.style.height = '288px';
     graphdiv.style.top = '100px';
     graphdiv.style.left = '100px';
     graphdiv.style.background = 'white';
