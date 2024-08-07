@@ -252,6 +252,7 @@ class ExcelSheet {
     this.marchingants = false;
 
     //selection flags
+    this.chartselect = null;
     this.isSelected = false;
     this.widthresize = false;
     this.heightresize = false;
@@ -847,6 +848,10 @@ class ExcelSheet {
       event.preventDefault();
       console.log("hello");
       // this.data[]
+    } else if (event.key === "Delete" && this.chartselect) {
+      event.preventDefault();
+      console.log("delete");
+      // chartselect.remove();
     }
     else {
       event.preventDefault();
@@ -900,6 +905,10 @@ class ExcelSheet {
     this.drawTable(this.start);
   }
 
+  /**
+   * 
+   * @param {} event 
+   */
 
   handleTextbox(event) {
     const rect = this.excel.getBoundingClientRect();
@@ -924,6 +933,11 @@ class ExcelSheet {
     this.drawTable(this.start);
   }
 
+  /**
+   * 
+   * @param {EventListener} Event Deleting Marching ants 
+   */
+
 
   handleExcelDoubleClick(event) {
     this.ants.style.display = "none";
@@ -945,6 +959,10 @@ class ExcelSheet {
 
     // this.drawTable(this.start);
   }
+
+  /**
+   * @param {EventListener} Scroll 
+   */
 
   handleViewPort(event) {
     // if (this.container.scrollY) {
@@ -971,6 +989,42 @@ class ExcelSheet {
   //   graphdiv.style.width = '500px';
   //   graphdiv.style.background = 'black';
   // }
+
+  MakeDragable(graphdiv) {
+    let x, y;
+
+    function DivMove(event) {
+      let m = event.clientX;
+      let n = event.clientY;
+
+      // console.log(m, n);
+
+      graphdiv.style.top = `${n - y}px`;
+      graphdiv.style.left = `${m - x}px`;
+    }
+
+    function Divdown(event) {
+      this.chartselect = graphdiv;
+      const rect = graphdiv.getBoundingClientRect();
+      x = event.clientX - rect.left;
+      y = event.clientY - rect.top;
+
+      document.addEventListener("pointermove", DivMove);
+      document.addEventListener("pointerup", DivUp);
+    }
+
+    function DivUp(event) {
+      document.removeEventListener("pointermove", DivMove);
+      document.removeEventListener("pointerup", DivUp);
+    }
+
+    graphdiv.addEventListener("pointerdown", Divdown);
+  }
+
+  /**
+   * 
+   * @param {EventListener} onClick 
+   */
 
   CreateBarGraph(event) {
     let graphcanvas = document.createElement("canvas");
@@ -1007,6 +1061,8 @@ class ExcelSheet {
         }
       }
     });
+
+    this.MakeDragable(graphdiv);
 
   }
 
@@ -1046,10 +1102,9 @@ class ExcelSheet {
       }
     });
 
+    this.MakeDragable(linediv);
+
   }
-
-
-
 }
 
 
