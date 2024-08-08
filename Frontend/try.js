@@ -316,13 +316,13 @@ class ExcelSheet {
   /**
    * Draw top Header
    */
-  drawHeaders(s) {
-    let start = 0.5;
+  drawHeaders(x) {
+    let start = 0.5 - x;
     this.b.textAlign = "center";
     this.b.textBaseline = "middle";
     this.b.font = "12px Calibri";
     for (let i = 0; i < 26; i++) {
-      let char = String.fromCharCode(65 + i + s - 1);
+      let char = String.fromCharCode(65 + i + x - 1);
       this.b.save();
       this.b.beginPath();
       this.b.lineWidth = 0.2;
@@ -342,7 +342,7 @@ class ExcelSheet {
     this.a.textAlign = "center";
     this.a.textBaseline = "middle";
     this.a.font = "10px Calibri";
-    let start = 0.5;
+    let start = 0.5 - x;
     for (let i = 0; i < 50; i++) {
       this.a.save();
       this.a.beginPath();
@@ -368,8 +368,8 @@ class ExcelSheet {
     this.c.textBaseline = "middle";
     this.c.font = "14px Calibri";
     this.c.fontWeight = "600";
-    let startX = 0.5;
-    let startY = 0.5;
+    let startX = 0.5 - t;
+    let startY = 0.5 - s;
 
     for (let index = 0; index <= this.cellWidths.length; index++) {
       this.c.save();
@@ -395,9 +395,9 @@ class ExcelSheet {
       this.c.restore();
     }
 
-    let y = 15;
+    let y = 15 - s;
     for (let i = s; i <= s + 37; i++) {
-      let x = 5;
+      let x = 5 - t;
       for (let j = t; j < 16 + t; j++) {
         // this.c.clip();
         if (this.data[i][j]) {
@@ -419,7 +419,7 @@ class ExcelSheet {
     this.a.clearRect(0, 0, this.id.width, this.id.height);
     this.b.clearRect(0, 0, this.header.width, this.header.height);
     this.c.clearRect(0, 0, this.excel.width, this.excel.height);
-    this.drawSelection();
+    this.drawSelection(y, x);
     this.drawHeaders(x);
     this.drawIds(y);
     this.drawExcel(y - 1, x);
@@ -490,12 +490,12 @@ class ExcelSheet {
    * Draws marching ants around selection
    */
 
-  drawSelection() {
+  drawSelection(y, x) {
     if (this.startCell && this.endCell) {
-      let startX = Math.min(this.startCell.col, this.endCell.col);
-      let endX = Math.max(this.startCell.col, this.endCell.col);
-      let startY = Math.min(this.startCell.row, this.endCell.row);
-      let endY = Math.max(this.startCell.row, this.endCell.row);
+      let startX = Math.min(this.startCell.col, this.endCell.col) - x + 1;
+      let endX = Math.max(this.startCell.col, this.endCell.col) - x + 1;
+      let startY = Math.min(this.startCell.row, this.endCell.row) - y + 1;
+      let endY = Math.max(this.startCell.row, this.endCell.row) - y + 1;
       let heightSum = 0.5,
         widthSum = 0.5;
       let startHeight = 0.5,
