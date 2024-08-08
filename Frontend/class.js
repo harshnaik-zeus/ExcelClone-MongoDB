@@ -699,6 +699,7 @@ class ExcelSheet {
       dotline.style.display = "block";
       dotline.style.left = `${event.clientX - rect.x + 20 + this.surplus}px`;
       dotline.style.top = "20px";
+      dotline.style.height = "800px";
       dotline.style.borderTop = "none";
       dotline.style.borderLeft = "2px dotted #999";
     }
@@ -980,7 +981,7 @@ class ExcelSheet {
    */
 
   handleViewPort(event) {
-    // console.log(this.infinitediv.scrollTop);
+    console.log(this.infinitediv.scrollLeft);
     let change = this.infinitediv.scrollTop;
     this.start = Math.floor(change / 80);
     this.drawTable(this.start);
@@ -1069,7 +1070,7 @@ class ExcelSheet {
     let linecanvas = document.createElement("canvas");
     let linediv = document.createElement("div");
 
-    if (this.container) this.container.append(linediv);
+    if (this.infinitediv) this.infinitediv.append(linediv);
     linediv.append(linecanvas);
 
     // setPorperties(graphdiv, graphcanvas);
