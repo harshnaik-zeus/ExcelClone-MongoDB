@@ -821,12 +821,44 @@ class ExcelSheet {
 
 
   CopyPaste(startcell, endcell, x) {
-    if (x == "copy") {
-      console.log("copy");
+    if (x === "copy") {
+      this.copyDataToClipboard(startcell, endcell);
+    } else {
+      this.pasteDataFromClipboard();
     }
-    else {
-      console.log("paste");
+  }
+
+  copyDataToClipboard(startcell, endcell) {
+    let copiedData = [];
+    for (let i = startcell.row; i <= endcell.row; i++) {
+      let row = [];
+      for (let j = startcell.col; j <= endcell.col; j++) {
+        row.push(this.data[i][j]);
+      }
+      copiedData.push(row);
     }
+    navigator.clipboard.writeText(JSON.stringify(copiedData)).then(() => {
+      console.log("Copied to clipboard");
+    }).catch(err => {
+      console.error("Could not copy text: ", err);
+    });
+  }
+
+  pasteDataFromClipboard() {
+    navigator.clipboard.readText().then(text => {
+      let pastedData = JSON.parse(text);
+      let startRow = this.startCell.row;
+      let startCol = this.startCell.col;
+      for (let i = 0; i < pastedData.length; i++) {
+        for (let j = 0; j < pastedData[i].length; j++) {
+          this.data[startRow + i][startCol + j] = pastedData[i][j];
+        }
+      }
+      this.drawTable(this.startY, this.startX);
+      console.log("Pasted from clipboard");
+    }).catch(err => {
+      console.error("Could not read clipboard: ", err);
+    });
   }
 
   /**
@@ -994,6 +1026,7 @@ class ExcelSheet {
     this.startY = Math.floor(change / 80);
     change = this.infinitediv.scrollLeft;
     this.startX = Math.floor(change / 100);
+    console.log(this.laststart, this.lastend);
     this.drawTable(this.startY, this.startX);
   }
 

@@ -19,10 +19,10 @@ class ExcelSheet {
     this.cellWidth = this.fixwidth;
     this.rows = 20;
     this.cols = 50;
-    this.startCell = null;
-    this.endCell = null;
-    this.laststart = null;
-    this.lastend = null;
+    this.startCell = { col: 0, row: 0 };
+    this.endCell = { col: 0, row: 0 };
+    this.laststart = { col: 0, row: 0 };
+    this.lastend = { col: 0, row: 0 };
     this.startX = 1;
     this.startY = 1;
 
@@ -50,7 +50,7 @@ class ExcelSheet {
     this.isSelected = false;
     this.widthresize = false;
     this.heightresize = false;
-    this.prevcell = null;
+    this.prevcell = { col: 0, row: 0 };
     this.startpoint = null;
     this.endpoint = null;
     this.target = -1;
@@ -207,7 +207,7 @@ class ExcelSheet {
     this.a.clearRect(0, 0, this.id.width, this.id.height);
     this.b.clearRect(0, 0, this.header.width, this.header.height);
     this.c.clearRect(0, 0, this.excel.width, this.excel.height);
-    this.drawSelection();
+    this.drawSelection(x);
     this.drawHeaders(y);
     this.drawIds(x);
     this.drawExcel(x - 1, y);
@@ -278,7 +278,7 @@ class ExcelSheet {
    * Draws marching ants around selection
    */
 
-  drawSelection() {
+  drawSelection(x) {
     if (this.startCell && this.endCell) {
       let startX = Math.min(this.startCell.col, this.endCell.col);
       let endX = Math.max(this.startCell.col, this.endCell.col);
@@ -362,9 +362,10 @@ class ExcelSheet {
       this.laststart = this.startCell;
       this.lastend = this.endCell;
       if (this.marchingants) {
+        if (x == 1) x = 0;
         this.drawants(
           startWidth - 0.5 + 20,
-          startHeight - 0.5 + 20,
+          startHeight - 0.5 + ((x + 1) * 20),
           widthSum - startWidth + 1 - 14,
           heightSum - startHeight + 1 - 14
         );
@@ -404,6 +405,7 @@ class ExcelSheet {
     this.endCell = this.startCell;
     this.handleTextbox(event);
     this.drawTable(this.startX, this.startY);
+    // console.log(this.startY);
   }
 
   /**
@@ -488,7 +490,7 @@ class ExcelSheet {
       this.b.clearRect(0, 0, this.header.width, this.header.height);
       this.startCell = this.laststart;
       this.endCell = this.lastend;
-      this.drawHeaders();
+      this.drawHeaders(this.startX);
       this.cellWidths[this.target] = org;
       let dotline = document.getElementById("dottedline");
       dotline.style.display = "block";
@@ -508,7 +510,7 @@ class ExcelSheet {
       this.a.clearRect(0, 0, this.id.width, this.id.height);
       this.startCell = this.laststart;
       this.endCell = this.lastend;
-      this.drawIds(this.start);
+      this.drawIds(this.startY);
       this.rowHeights[this.rowTarget] = org;
       let dotline = document.getElementById("dottedline");
       dotline.style.display = "block";
@@ -523,7 +525,7 @@ class ExcelSheet {
       let x = event.offsetX;
       let y = 0;
       this.endCell = this.getCellAtPosition(x, y);
-      this.endCell.row = this.cols - 1;
+      this.endCell.row = this.cols - 1 + this.startY;
       this.drawTable(this.startX, this.startY);
     }
 
@@ -583,7 +585,7 @@ class ExcelSheet {
       let x = event.offsetX;
       let y = 0;
       this.endCell = this.getCellAtPosition(x, y);
-      this.endCell.row = this.cols - 1;
+      this.endCell.row = this.cols - 1 + this.startY;
       this.drawTable(this.startX, this.startY);
       this.prevcell = this.startCell;
       this.startCell = null;
@@ -778,10 +780,21 @@ class ExcelSheet {
   handleViewPort(event) {
     console.log(this.infinitediv.scrollTop);
     let change = this.infinitediv.scrollTop;
-    this.startX = Math.floor(change / 80);
-    change = this.infinitediv.scrollLeft;
-    this.startY = Math.floor(change / 100);
+    this.startX = Math.floor(change / 20);
+    let hell = this.infinitediv.scrollLeft;
+    this.startY = Math.floor(hell / 100);
+
+    if (!this.laststart && !this.lastend) {
+      this.laststart = { col: 0, row: 0 };
+      this.lastend = { col: 0, row: 0 };
+    }
+
+    this.startCell = { col: this.laststart.col, row: this.laststart.row };
+    this.endCell = { col: this.lastend.col, row: this.lastend.row };
+
     this.drawTable(this.startX, this.startY);
+    this.isSelected = false;
+
   }
 
 
