@@ -371,6 +371,7 @@ class ExcelSheet {
         );
       }
     }
+    console.log(this.startX);
     // this.handleTextbox(this.start);
   }
 
@@ -450,7 +451,7 @@ class ExcelSheet {
     const rect = this.excel.getBoundingClientRect();
     this.rowStartPoint = event.clientY - rect.top;
     let sum = 0;
-    for (let index = this.start - 1; index < this.rowHeights.length; index++) {
+    for (let index = this.startY - 1; index < this.rowHeights.length; index++) {
       sum += this.rowHeights[index];
       if (Math.abs(sum - this.rowStartPoint) <= 5) {
         this.rowTarget = index;
@@ -490,7 +491,7 @@ class ExcelSheet {
       this.b.clearRect(0, 0, this.header.width, this.header.height);
       this.startCell = this.laststart;
       this.endCell = this.lastend;
-      this.drawHeaders(this.startX);
+      this.drawHeaders(this.startY);
       this.cellWidths[this.target] = org;
       let dotline = document.getElementById("dottedline");
       dotline.style.display = "block";
@@ -778,7 +779,8 @@ class ExcelSheet {
    */
 
   handleViewPort(event) {
-    console.log(this.infinitediv.scrollTop);
+    // console.log(this.infinitediv.scrollTop);
+    // console.log(this.infinitediv.scrollHeight);
     let change = this.infinitediv.scrollTop;
     this.startX = Math.floor(change / 20);
     let hell = this.infinitediv.scrollLeft;
@@ -793,6 +795,7 @@ class ExcelSheet {
     this.endCell = { col: this.lastend.col, row: this.lastend.row };
 
     this.drawTable(this.startX, this.startY);
+    console.log(this.isSelected);
     this.isSelected = false;
 
   }
