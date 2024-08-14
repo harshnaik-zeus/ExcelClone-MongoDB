@@ -3,7 +3,6 @@ C:\Users\harsh.naik\Desktop\ExcelClone\Backend\obj\Debug\net8.0\Backend.Generate
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\obj\Debug\net8.0\Backend.AssemblyInfoInputs.cache
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\obj\Debug\net8.0\Backend.AssemblyInfo.cs
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\obj\Debug\net8.0\Backend.csproj.CoreCompileInputs.cache
-C:\Users\harsh.naik\Desktop\ExcelClone\Backend\obj\Debug\net8.0\Backend.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\obj\Debug\net8.0\Backend.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\obj\Debug\net8.0\Backend.sourcelink.json
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\appsettings.Development.json
@@ -15,8 +14,8 @@ C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Backend.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Backend.pdb
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Azure.Identity.dll
+C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\CsvHelper.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Humanizer.dll
-C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
@@ -37,15 +36,10 @@ C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Microsoft.Identi
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
-C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Microsoft.OpenApi.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Mono.TextTemplating.dll
-C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\MySqlConnector.dll
-C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll
-C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
-C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
-C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\RabbitMQ.Client.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\System.CodeDom.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\System.Composition.AttributedModel.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\System.Composition.Convention.dll

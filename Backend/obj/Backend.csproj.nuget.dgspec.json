@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\backend\\Backend.csproj": {}
+    "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\backend\\Backend.csproj": {
+    "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\backend\\Backend.csproj",
+        "projectUniqueName": "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\backend\\Backend.csproj",
+        "projectPath": "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\Backend\\Backend.csproj",
         "packagesPath": "C:\\Users\\harsh.naik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\backend\\obj\\",
+        "outputPath": "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\harsh.naik\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -43,27 +43,27 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.AspNetCore.OpenApi": {
+            "CsvHelper": {
               "target": "Package",
-              "version": "[8.0.7, )"
+              "version": "[33.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.8, )"
             },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[8.0.7, )"
+              "version": "[8.0.8, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.7, )"
+              "version": "[8.0.8, )"
             },
-            "Pomelo.EntityFrameworkCore.MySql": {
+            "RabbitMQ.Client": {
               "target": "Package",
-              "version": "[8.0.2, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.4.0, )"
+              "version": "[6.8.1, )"
             }
           },
           "imports": [
