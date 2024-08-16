@@ -22,7 +22,6 @@ public class ProducerService
             if (chunk.Count == 0)
                 break;
 
-
             var message = string.Join("\n", chunk);
             var body = Encoding.UTF8.GetBytes(message);
 

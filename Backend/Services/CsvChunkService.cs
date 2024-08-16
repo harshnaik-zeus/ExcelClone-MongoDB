@@ -21,17 +21,13 @@ public class CsvChunkService
         using (var reader = new StreamReader(filePath))
         using (var csv = new CsvReader(reader, new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)))
         {
-            // Read the header
             csv.Read();
             csv.ReadHeader();
-
-            // Skip lines to reach the desired chunk
             for (int i = 0; i < startLine && csv.Read(); i++) { }
 
-            // Read the chunk
             while (csv.Read() && chunk.Count < _chunkSize)
             {
-                var row = csv.Parser.Record; // Read the current row as a string array
+                var row = csv.Parser.Record;
                 chunk.Add(string.Join(",", row));
             }
         }

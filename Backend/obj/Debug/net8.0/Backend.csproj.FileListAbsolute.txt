@@ -138,3 +138,5 @@ C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\runtimes\win-x64
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\runtimes\win-x86\native\sni.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
 C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\MySqlConnector.dll
+C:\Users\harsh.naik\Desktop\ExcelClone\Backend\bin\Debug\net8.0\Pomelo.EntityFrameworkCore.MySql.dll

@@ -17,7 +17,7 @@ public class ConsumerService
     public void StartConsuming()
     {
         var consumer = new EventingBasicConsumer(_channel);
-        consumer.Received += (model, ea) =>
+        consumer.Received += async (model, ea) =>
         {
             var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
@@ -26,13 +26,11 @@ public class ConsumerService
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                connection.Open();
+                await connection.OpenAsync();
                 foreach (var line in lines)
                 {
-                    // Console.WriteLine(line);
-                    // if (!string.IsNullOrWhiteSpace(line))
-                    // {
                     var values = line.Split(',');
+                    // Console.WriteLine(values[0]);
                     var query = @"INSERT INTO employeeinfo 
                                       (Column2, Column3, Column4, Column5, Column6, 
                                        Column7, Column8, Column9, Column10, Column11, Column12, 
@@ -43,20 +41,16 @@ public class ConsumerService
 
                     using (var command = new SqlCommand(query, connection))
                     {
-                        // Add parameters for each of the 14 columns
-                        for (int i = 0; i < 14; i++)
-                        {
-                            command.Parameters.AddWithValue($"@value{i + 1}", values.Length > i ? values[i] : (object)DBNull.Value);
-                        }
-
-                        // Execute the query
-                        command.ExecuteNonQuery();
+                        // for (int i = 0; i < 14; i++)
+                        // {
+                        //     command.Parameters.AddWithValue($"@value{i + 1}", values.Length > i ? values[i] : (object)DBNull.Value);
+                        // }
+                        await command.ExecuteNonQueryAsync();
                     }
-                    // }
+
                 }
             }
         };
-
         _channel.BasicConsume(queue: "csv_queue", autoAck: true, consumer: consumer);
     }
 }
