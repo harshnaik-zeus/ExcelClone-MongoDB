@@ -5,29 +5,35 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var csvFilePath = @"C:\Users\harsh.naik\Desktop\ExcelClone\users.csv"; // Update this path
+        var csvFilePath = @"C:\Users\harsh.naik\Desktop\ExcelClone\users.csv";
         var chunkSize = 5000;
 
-        // Set up RabbitMQ connection and channel
+        // RabbitMQ 
         var factory = new ConnectionFactory() { HostName = "localhost" };
         using var connection = factory.CreateConnection();
         using var channel = connection.CreateModel();
 
-        // Declare a durable queue for the CSV chunks
+        // queue for the CSV chunks
         channel.QueueDeclare(queue: "csv_queue", durable: true, exclusive: false, autoDelete: false, arguments: null);
 
-        // Set up the CSV chunk service
+        // CSV chunk 
         var csvChunkService = new CsvChunkService(chunkSize);
 
-        // Set up and run the producer
+        //producer
+
+        var watch = new System.Diagnostics.Stopwatch();
+        watch.Start();
+
         var producerService = new ProducerService(channel, csvChunkService);
         producerService.ProduceChunks(csvFilePath);
 
-        // Set up and run the consumer
+        // consumer
         var consumerService = new ConsumerService(channel);
         consumerService.StartConsuming();
 
-        // Keep the application running to consume messages
+        watch.Stop();
+        Console.WriteLine($"Execution Time: {watch.ElapsedMilliseconds} ms");
+
         Console.WriteLine(" Press [enter] to exit.");
         Console.ReadLine();
     }
