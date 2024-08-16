@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\Backend\\Backend.csproj": {}
+    "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\backend\\Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\Backend\\Backend.csproj": {
+    "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\Backend\\Backend.csproj",
+        "projectUniqueName": "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\Backend\\Backend.csproj",
+        "projectPath": "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\backend\\Backend.csproj",
         "packagesPath": "C:\\Users\\harsh.naik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\Backend\\obj\\",
+        "outputPath": "C:\\Users\\harsh.naik\\Desktop\\ExcelClone\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\harsh.naik\\AppData\\Roaming\\NuGet\\NuGet.Config"
