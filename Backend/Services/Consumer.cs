@@ -31,7 +31,7 @@ public class ConsumerService
             foreach (var line in lines)
             {
                 var values = line.Split(',');
-                if (values.Length == 14) // Ensure all columns have data
+                if (values.Length == 14)
                 {
                     var valuesFormatted = string.Join(",", values.Select(v => $"'{v}'"));
                     valuesList.Add($"({valuesFormatted})");
