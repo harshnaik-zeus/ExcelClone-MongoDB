@@ -1,7 +1,9 @@
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using System.Text;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class ConsumerService
 {
@@ -22,32 +24,34 @@ public class ConsumerService
             var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
             var lines = message.Split('\n');
-            Console.WriteLine("chunk Received");
+            Console.WriteLine("Chunk Received");
 
-            using (var connection = new SqlConnection(_connectionString))
+            var valuesList = new List<string>();
+
+            foreach (var line in lines)
             {
-                await connection.OpenAsync();
-                foreach (var line in lines)
+                var values = line.Split(',');
+                if (values.Length == 14) // Ensure all columns have data
                 {
-                    var values = line.Split(',');
-                    // Console.WriteLine(values[0]);
-                    var query = @"INSERT INTO employeeinfo 
-                                      (Column2, Column3, Column4, Column5, Column6, 
-                                       Column7, Column8, Column9, Column10, Column11, Column12, 
-                                       Column13, Column14) 
-                                      VALUES (@value1, @value2, @value3, @value4, @value5, @value6, 
-                                              @value7, @value8, @value9, @value10, @value11, @value12, 
-                                              @value13, @value14)";
+                    var valuesFormatted = string.Join(",", values.Select(v => $"'{v}'"));
+                    valuesList.Add($"({valuesFormatted})");
+                }
+            }
 
-                    using (var command = new SqlCommand(query, connection))
+            if (valuesList.Count > 0)
+            {
+                using (var dbConnection = new MySqlConnection(_connectionString))
+                {
+                    await dbConnection.OpenAsync();
+
+                    var query = $"INSERT INTO employeeinfo (`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`) VALUES {string.Join(",", valuesList)};";
+
+                    using (var command = new MySqlCommand(query, dbConnection))
                     {
-                        // for (int i = 0; i < 14; i++)
-                        // {
-                        //     command.Parameters.AddWithValue($"@value{i + 1}", values.Length > i ? values[i] : (object)DBNull.Value);
-                        // }
                         await command.ExecuteNonQueryAsync();
                     }
 
+                    await dbConnection.CloseAsync();
                 }
             }
         };
