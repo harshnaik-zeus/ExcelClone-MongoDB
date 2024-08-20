@@ -27,8 +27,15 @@ public class CsvChunkService
 
             while (csv.Read() && chunk.Count < _chunkSize)
             {
+                startLine++;
                 var row = csv.Parser.Record;
-                chunk.Add(string.Join(",", row));
+                var list = new List<string>();
+                list.Add(startLine.ToString());
+                foreach (var item in row)
+                {
+                    list.Add(item);
+                }
+                chunk.Add(string.Join(",", list));
             }
         }
 

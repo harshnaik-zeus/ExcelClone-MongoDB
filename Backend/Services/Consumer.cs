@@ -5,6 +5,8 @@ using System.Text;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+
+
 public class ConsumerService
 {
     private readonly IModel _channel;
@@ -24,14 +26,14 @@ public class ConsumerService
             var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
             var lines = message.Split('\n');
-            Console.WriteLine("Chunk Received");
+            // Console.WriteLine(message);
 
             var valuesList = new List<string>();
 
             foreach (var line in lines)
             {
                 var values = line.Split(',');
-                if (values.Length == 14)
+                if (values.Length == 15)
                 {
                     var valuesFormatted = string.Join(",", values.Select(v => $"'{v}'"));
                     valuesList.Add($"({valuesFormatted})");
@@ -44,7 +46,7 @@ public class ConsumerService
                 {
                     await dbConnection.OpenAsync();
 
-                    var query = $"INSERT INTO employeeinfo (`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`) VALUES {string.Join(",", valuesList)};";
+                    var query = $"INSERT INTO employeeinfo (`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14` ,`15`) VALUES {string.Join(",", valuesList)};";
 
                     using (var command = new MySqlCommand(query, dbConnection))
                     {

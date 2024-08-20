@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
-using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 public class Program
 {
@@ -13,39 +15,60 @@ public class Program
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
-            .ConfigureServices((hostContext, services) =>
+            .ConfigureWebHostDefaults(webBuilder =>
             {
-                // Configuration 
-                var chunkSize = 5000;
-                var connectionString = "Server=localhost;User ID=root;Password=Interstellar@2014;Database=employeedb";
-
-                // Register RabbitMQ services 
-                services.AddSingleton<IConnectionFactory>(sp => new ConnectionFactory() { HostName = "localhost" });
-                services.AddSingleton(sp =>
-                {
-                    var factory = sp.GetRequiredService<IConnectionFactory>();
-                    return factory.CreateConnection();
-                });
-                services.AddSingleton(sp =>
-                {
-                    var connection = sp.GetRequiredService<IConnection>();
-                    return connection.CreateModel();
-                });
-
-                // Register custom services 
-                services.AddSingleton<CsvChunkService>(sp => new CsvChunkService(chunkSize));
-                services.AddSingleton<ProducerService>();
-                services.AddSingleton<ConsumerService>(sp => new ConsumerService(sp.GetRequiredService<IModel>(), connectionString));
-
-                // Hosted services 
-                services.AddHostedService<Worker>();
-
-                // Add Controllers (if applicable)
-                services.AddControllers();
+                webBuilder.UseStartup<Startup>();
             });
 }
 
-// Worker class for hosting services 
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        // Configuration
+        var chunkSize = 5000;
+        var connectionString = "Server=localhost;User ID=root;Password=Interstellar@2014;Database=employeedb";
+
+        // Register RabbitMQ services
+        services.AddSingleton<IConnectionFactory>(sp => new ConnectionFactory() { HostName = "localhost" });
+        services.AddSingleton(sp =>
+        {
+            var factory = sp.GetRequiredService<IConnectionFactory>();
+            return factory.CreateConnection();
+        });
+        services.AddSingleton(sp =>
+        {
+            var connection = sp.GetRequiredService<IConnection>();
+            return connection.CreateModel();
+        });
+
+        // Register custom services
+        services.AddSingleton<CsvChunkService>(sp => new CsvChunkService(chunkSize));
+        services.AddSingleton<ProducerService>();
+        services.AddSingleton<ConsumerService>(sp => new ConsumerService(sp.GetRequiredService<IModel>(), connectionString));
+
+        // Register the worker as a hosted service
+        services.AddHostedService<Worker>();
+
+        // Add controllers
+        services.AddControllers();
+    }
+
+    public void Configure(IApplicationBuilder app, IHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+
+        app.UseRouting();
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
+    }
+}
 public class Worker : BackgroundService
 {
     private readonly ProducerService _producerService;
@@ -60,8 +83,11 @@ public class Worker : BackgroundService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var csvFilePath = @"C:\Users\harsh.naik\Desktop\ExcelClone\users.csv";
+
+        // Start producing chunks
         _producerService.ProduceChunks(csvFilePath);
 
+        // Start consuming messages
         _consumerService.StartConsuming();
 
         await Task.CompletedTask;
