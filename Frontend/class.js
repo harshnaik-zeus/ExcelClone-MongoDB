@@ -73,6 +73,7 @@ class ExcelSheet {
     this.initializeCanvas();
     this.addEventListeners();
     this.drawTable(this.startX, this.startY);
+    this.loadData(this.startX - 1, this.startY);
   }
 
   initializeCanvas() {
@@ -154,7 +155,36 @@ class ExcelSheet {
   /**
    * Draw main excel lines and data
    */
-  drawExcel(s, t) {
+
+  loadData(s, t) {
+    axios.get(`http://localhost:5099/api/getPageData?id=${s}`)
+      .then(response => {
+        const data = response.data;
+        let y = 15;
+        for (let i = s; i <= s + 37; i++) {
+          let x = 5;
+          for (let j = t + 1; j < 16 + t; j++) {
+
+            this.c.save();
+            this.c.beginPath();
+            this.c.rect(x, y - this.rowHeights[i] / 2, this.cellWidths[j] - 10, this.rowHeights[i]);
+            this.c.clip();
+
+            if (data[i] && data[i][j]) {
+              this.c.fillText(data[i][j], x, y);
+            }
+            this.c.restore();
+            x += this.cellWidths[j];
+          }
+          y += this.rowHeights[i];
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
+  drawExcel() {
     this.c.textAlign = "left";
     this.c.textBaseline = "middle";
     this.c.font = "14px Calibri";
@@ -185,21 +215,8 @@ class ExcelSheet {
       this.c.stroke();
       this.c.restore();
     }
-
-    let y = 15;
-    for (let i = s; i <= s + 37; i++) {
-      let x = 5;
-      for (let j = t; j < 16 + t; j++) {
-        // this.c.clip();
-        if (this.data[i][j]) {
-          this.c.fillText(this.data[i][j], x, y);
-        }
-        x += this.cellWidths[j];
-      }
-      y += this.rowHeights[i];
-    }
-    // this.c.clip();
   }
+
 
   drawTable(x, y) {
     x = Math.max(x, 1);
@@ -795,6 +812,7 @@ class ExcelSheet {
     this.endCell = { col: this.lastend.col, row: this.lastend.row };
 
     this.drawTable(this.startX, this.startY);
+    // this.loadData(this.startX - 1, this.startY + 1);
     console.log(this.isSelected);
     this.isSelected = false;
 

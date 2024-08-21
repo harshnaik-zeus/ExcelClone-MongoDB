@@ -25,7 +25,7 @@ namespace Backend.Controllers
                 using var connection = new MySqlConnection(_connectionString);
                 await connection.OpenAsync();
 
-                string query = $"SELECT * FROM employeedb.employeeinfo ORDER BY `1` ASC LIMIT {id}, 100";
+                string query = $"SELECT * FROM employeedb.employeeinfo ORDER BY `1` ASC LIMIT {id}, 37";
                 using var command = new MySqlCommand(query, connection);
                 using var reader = await command.ExecuteReaderAsync();
 

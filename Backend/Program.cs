@@ -52,6 +52,19 @@ public class Startup
 
         // Add controllers
         services.AddControllers();
+
+        services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAllOrigins",
+            builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+            });
+    });
+
+
     }
 
     public void Configure(IApplicationBuilder app, IHostEnvironment env)
@@ -62,6 +75,7 @@ public class Startup
         }
 
         app.UseRouting();
+        app.UseCors("AllowAllOrigins");
 
         app.UseEndpoints(endpoints =>
         {
