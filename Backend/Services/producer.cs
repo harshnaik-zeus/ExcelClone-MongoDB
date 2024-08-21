@@ -26,7 +26,7 @@ public class ProducerService
             var body = Encoding.UTF8.GetBytes(message);
 
             _channel.BasicPublish(exchange: "", routingKey: "csv_queue", basicProperties: null, body: body);
-            Console.WriteLine($"{chunkNumber} chunk sent");
+            Console.WriteLine($"{chunkNumber}th chunk sent - chunk recieved");
 
         }
     }
