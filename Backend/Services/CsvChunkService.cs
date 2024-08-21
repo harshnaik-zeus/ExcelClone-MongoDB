@@ -22,7 +22,7 @@ public class CsvChunkService
         using (var csv = new CsvReader(reader, new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)))
         {
             csv.Read();
-            csv.ReadHeader();
+            // csv.ReadHeader();
             for (int i = 0; i < startLine && csv.Read(); i++) { }
 
             while (csv.Read() && chunk.Count < _chunkSize)

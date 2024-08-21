@@ -1,5 +1,3 @@
-import { data } from './data.js';
-
 class ExcelSheet {
   constructor() {
     /**
@@ -33,9 +31,6 @@ class ExcelSheet {
      *   mock data -->
      */
 
-    this.data = data;
-
-
     /**
      * array of colomns widths and row heights
      */
@@ -66,14 +61,16 @@ class ExcelSheet {
     this.idtarget = false;
     this.idsurplus = 0;
     this.prevstart = null;
+    this.data = [];
     this.ants = document.querySelector(".marching-ants");
     this.bargraph = document.getElementById("bar");
     this.linegraph = document.getElementById("line");
 
+    this.loadData(0);
     this.initializeCanvas();
     this.addEventListeners();
     this.drawTable(this.startX, this.startY);
-    this.loadData(this.startX - 1, this.startY);
+
   }
 
   initializeCanvas() {
@@ -103,6 +100,19 @@ class ExcelSheet {
     this.bargraph.addEventListener("click", this.CreateBarGraph.bind(this));
     this.linegraph.addEventListener("click", this.CreateLineGraph.bind(this));
     this.infinitediv.addEventListener("scroll", this.handleViewPort.bind(this));
+  }
+
+  async loadData(s) {
+    try {
+      const response = await axios.get(`http://localhost:5099/api/getPageData?id=${s}`);
+      if (response.data) {
+        this.data = response.data;
+        this.drawTable(this.startX, this.startY);
+
+      }
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
   }
 
   /**
@@ -155,36 +165,7 @@ class ExcelSheet {
   /**
    * Draw main excel lines and data
    */
-
-  loadData(s, t) {
-    axios.get(`http://localhost:5099/api/getPageData?id=${s}`)
-      .then(response => {
-        const data = response.data;
-        let y = 15;
-        for (let i = s; i <= s + 37; i++) {
-          let x = 5;
-          for (let j = t + 1; j < 16 + t; j++) {
-
-            this.c.save();
-            this.c.beginPath();
-            this.c.rect(x, y - this.rowHeights[i] / 2, this.cellWidths[j] - 10, this.rowHeights[i]);
-            this.c.clip();
-
-            if (data[i] && data[i][j]) {
-              this.c.fillText(data[i][j], x, y);
-            }
-            this.c.restore();
-            x += this.cellWidths[j];
-          }
-          y += this.rowHeights[i];
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }
-
-  drawExcel() {
+  drawExcel(s, t) {
     this.c.textAlign = "left";
     this.c.textBaseline = "middle";
     this.c.font = "14px Calibri";
@@ -214,6 +195,24 @@ class ExcelSheet {
       startY += this.rowHeights[index];
       this.c.stroke();
       this.c.restore();
+    }
+    let y = 15;
+    for (let i = s; i <= s + 37; i++) {
+      let x = 5;
+      for (let j = t + 1; j < 16 + t; j++) {
+
+        this.c.save();
+        this.c.beginPath();
+        this.c.rect(x, y - this.rowHeights[i] / 2, this.cellWidths[j] - 10, this.rowHeights[i]);
+        this.c.clip();
+
+        if (this.data[i] && this.data[i][j]) {
+          this.c.fillText(this.data[i][j], x, y);
+        }
+        this.c.restore();
+        x += this.cellWidths[j];
+      }
+      y += this.rowHeights[i];
     }
   }
 
@@ -388,7 +387,7 @@ class ExcelSheet {
         );
       }
     }
-    console.log(this.startX);
+    // console.log(this.startX);
     // this.handleTextbox(this.start);
   }
 
@@ -795,7 +794,7 @@ class ExcelSheet {
    * @param {EventListener} Scroll 
    */
 
-  handleViewPort(event) {
+  async handleViewPort(event) {
     // console.log(this.infinitediv.scrollTop);
     // console.log(this.infinitediv.scrollHeight);
     let change = this.infinitediv.scrollTop;
@@ -811,9 +810,11 @@ class ExcelSheet {
     this.startCell = { col: this.laststart.col, row: this.laststart.row };
     this.endCell = { col: this.lastend.col, row: this.lastend.row };
 
+    if (this.startX % 50 == 0) {
+      await this.loadData(this.startX);
+      console.log(this.startX);
+    }
     this.drawTable(this.startX, this.startY);
-    // this.loadData(this.startX - 1, this.startY + 1);
-    console.log(this.isSelected);
     this.isSelected = false;
 
   }
