@@ -106,8 +106,16 @@ class ExcelSheet {
     try {
       const response = await axios.get(`http://localhost:5099/api/getPageData?id=${s}`);
       if (response.data) {
-        this.data = response.data;
+        console.log(response.data)
+        for (var arr in response.data) {
+          var temp = [];
+          for (var i in response.data[arr]) {
+            temp.push(response.data[arr][i]);
+          }
+          this.data.push(temp);
+        }
         this.drawTable(this.startX, this.startY);
+        console.log(this.data)
 
       }
     } catch (error) {
@@ -226,7 +234,7 @@ class ExcelSheet {
     this.drawSelection(x);
     this.drawHeaders(y);
     this.drawIds(x);
-    this.drawExcel(x - 1, y);
+    this.drawExcel(x - 1, y - 1);
   }
 
   /**
