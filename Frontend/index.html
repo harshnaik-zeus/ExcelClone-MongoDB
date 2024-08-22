@@ -24,6 +24,35 @@
   </div>
 </div>
 <div><span class="stats"><button id="bar" class="Graph">Bar Graph</button><button id = "line" class="graph">Line Graph</button><p class="avg">AVERAGE : </p><p class="sum">SUM :</p><p class="min">MIN :</p><p class="max">MAX :</p></span></div>
+<form id="uploadForm" enctype="multipart/form-data">
+  <input type="file" id="fileInput" name="file" accept=".csv" required>
+  <button type="submit">Upload CSV</button>
+</form>
+
+<script>
+  document.getElementById("uploadForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      const fileInput = document.getElementById("fileInput");
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
+
+      try {
+          const response = await fetch("http://localhost:5099/api/upload", {
+              method: "POST",
+              body: formData
+          });
+          if (response.ok) {
+              alert("File uploaded successfully:");
+          } else {
+              alert("File upload failed.");
+          }
+      } catch (error) {
+          console.error("Error uploading file:", error);
+          alert("An error occurred while uploading the file.");
+      }
+  });
+</script>
   </body>
   <script type="module" src="class.js"></script>
 </html>

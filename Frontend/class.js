@@ -100,6 +100,7 @@ class ExcelSheet {
     this.bargraph.addEventListener("click", this.CreateBarGraph.bind(this));
     this.linegraph.addEventListener("click", this.CreateLineGraph.bind(this));
     this.infinitediv.addEventListener("scroll", this.handleViewPort.bind(this));
+    // document.getElementById("uploadForm").addEventListener("submit", this.submitcsv.bind(this));
   }
 
   async loadData(s) {
@@ -207,7 +208,7 @@ class ExcelSheet {
     let y = 15;
     for (let i = s; i <= s + 37; i++) {
       let x = 5;
-      for (let j = t + 1; j < 16 + t; j++) {
+      for (let j = t + 1; j < 15 + t; j++) {
 
         this.c.save();
         this.c.beginPath();
@@ -643,6 +644,32 @@ class ExcelSheet {
       console.log("paste");
     }
   }
+
+
+  // async submitcsv(event) {
+  //   event.preventDefault();
+  //   const fileInput = document.getElementById("fileInput");
+  //   const formData = new FormData();
+  //   formData.append("file", fileInput.files[0]);
+
+  //   try {
+  //     const response = await fetch("http://localhost:5099/api/CSVUpload/upload", {
+  //       method: "POST",
+  //       body: formData
+  //     });
+
+  //     if (response.ok) {
+  //       const result = await response.json();
+  //       alert("File uploaded successfully: " + result.filename);
+  //     } else {
+  //       alert("File upload failed.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error uploading file:", error);
+  //     alert("An error occurred while uploading the file.");
+  //   }
+  // }
+
 
   /**
    * @type {EventListener}
