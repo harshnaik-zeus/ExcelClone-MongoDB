@@ -7,7 +7,7 @@
 #mainbig #container {
   position: relative;
   width: 10000px;
-  height: 10000px;
+  height: 50000px;
   z-index: 0;
 }
 #mainbig #container #candiv {

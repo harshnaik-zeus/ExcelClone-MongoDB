@@ -34,8 +34,8 @@ class ExcelSheet {
     /**
      * array of colomns widths and row heights
      */
-    this.cellWidths = Array(1000).fill(this.cellWidth);
-    this.rowHeights = Array(1000).fill(this.cellHeight);
+    this.cellWidths = Array(2000).fill(this.cellWidth);
+    this.rowHeights = Array(2000).fill(this.cellHeight);
 
     // marching ants flag
     this.marchingants = false;
