@@ -96,7 +96,7 @@ public class Worker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var csvFilePath = @"C:\Users\harsh.naik\Desktop\ExcelClone\users.csv";
+        var csvFilePath = @"C:\Users\harsh.naik\Desktop\ExcelClone\Upload\users.csv";
 
         // Start producing chunks
         _producerService.ProduceChunks(csvFilePath);

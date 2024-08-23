@@ -17,6 +17,7 @@ namespace Backend.Controllers
             return Ok(result);
         }
 
+
         private async Task<string> WriteFile(IFormFile file)
         {
             string filename = "users.csv";
@@ -34,6 +35,7 @@ namespace Backend.Controllers
                 }
 
                 Console.WriteLine(exactpath);
+
             }
             catch (Exception ex)
             {
