@@ -34,7 +34,7 @@ class ExcelSheet {
     /**
      * array of colomns widths and row heights
      */
-    this.cellWidths = Array(2000).fill(this.cellWidth);
+    this.cellWidths = Array(50).fill(this.cellWidth);
     this.rowHeights = Array(2000).fill(this.cellHeight);
 
     // marching ants flag
@@ -61,10 +61,11 @@ class ExcelSheet {
     this.idtarget = false;
     this.idsurplus = 0;
     this.prevstart = null;
-    this.data = [];
+    this.data = new Map();
     this.ants = document.querySelector(".marching-ants");
     this.bargraph = document.getElementById("bar");
     this.linegraph = document.getElementById("line");
+    this.uploadform = document.getElementById("uploadForm");
 
     this.loadData(0);
     this.initializeCanvas();
@@ -100,24 +101,23 @@ class ExcelSheet {
     this.bargraph.addEventListener("click", this.CreateBarGraph.bind(this));
     this.linegraph.addEventListener("click", this.CreateLineGraph.bind(this));
     this.infinitediv.addEventListener("scroll", this.handleViewPort.bind(this));
-    // document.getElementById("uploadForm").addEventListener("submit", this.submitcsv.bind(this));
+    this.uploadform.addEventListener("submit", this.submitcsv.bind(this));
   }
 
   async loadData(s) {
     try {
       const response = await axios.get(`http://localhost:5099/api/getPageData?id=${s}`);
       if (response.data) {
-        console.log(response.data)
         for (var arr in response.data) {
           var temp = [];
           for (var i in response.data[arr]) {
             temp.push(response.data[arr][i]);
           }
-          this.data.push(temp);
+          this.data[s] = (temp);
+          s++;
         }
         this.drawTable(this.startX, this.startY);
-        console.log(this.data)
-
+        console.log(s, "a");
       }
     } catch (error) {
       console.error("Error loading data:", error);
@@ -235,7 +235,7 @@ class ExcelSheet {
     this.drawSelection(x);
     this.drawHeaders(y);
     this.drawIds(x);
-    this.drawExcel(x - 1, y - 1);
+    this.drawExcel(x, y - 1);
   }
 
   /**
@@ -646,29 +646,28 @@ class ExcelSheet {
   }
 
 
-  // async submitcsv(event) {
-  //   event.preventDefault();
-  //   const fileInput = document.getElementById("fileInput");
-  //   const formData = new FormData();
-  //   formData.append("file", fileInput.files[0]);
+  async submitcsv(event) {
+    event.preventDefault();
+    const fileInput = document.getElementById("fileInput");
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
 
-  //   try {
-  //     const response = await fetch("http://localhost:5099/api/CSVUpload/upload", {
-  //       method: "POST",
-  //       body: formData
-  //     });
+    try {
+      const response = await fetch("http://localhost:5099/api/upload", {
+        method: "POST",
+        body: formData
+      });
 
-  //     if (response.ok) {
-  //       const result = await response.json();
-  //       alert("File uploaded successfully: " + result.filename);
-  //     } else {
-  //       alert("File upload failed.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error uploading file:", error);
-  //     alert("An error occurred while uploading the file.");
-  //   }
-  // }
+      if (response.ok) {
+        alert("File uploaded successfully: ");
+      } else {
+        alert("File upload failed.");
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("An error occurred while uploading the file.");
+    }
+  }
 
 
   /**
@@ -830,8 +829,6 @@ class ExcelSheet {
    */
 
   async handleViewPort(event) {
-    // console.log(this.infinitediv.scrollTop);
-    // console.log(this.infinitediv.scrollHeight);
     let change = this.infinitediv.scrollTop;
     this.startX = Math.floor(change / 20);
     let hell = this.infinitediv.scrollLeft;
@@ -845,7 +842,7 @@ class ExcelSheet {
     this.startCell = { col: this.laststart.col, row: this.laststart.row };
     this.endCell = { col: this.lastend.col, row: this.lastend.row };
 
-    if (this.startX % 50 == 0) {
+    if ((this.startX % 50).toPrecision(4) == 0.0000) {
       await this.loadData(this.startX);
       console.log(this.startX);
     }

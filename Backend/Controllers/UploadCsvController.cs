@@ -20,7 +20,6 @@ namespace Backend.Controllers
         private async Task<string> WriteFile(IFormFile file)
         {
             string filename = "users.csv";
-            Console.WriteLine(file.FileName);
             try
             {
                 var filepath = Path.Combine(Directory.GetCurrentDirectory(), "Upload");
@@ -33,6 +32,8 @@ namespace Backend.Controllers
                 {
                     await file.CopyToAsync(stream);
                 }
+
+                Console.WriteLine(exactpath);
             }
             catch (Exception ex)
             {
