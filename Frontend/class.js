@@ -23,7 +23,7 @@ class ExcelSheet {
     this.lastend = { col: 0, row: 0 };
     this.startX = 1;
     this.startY = 1;
-
+    this.lastchange = 0;
     // this.word = "hello";
 
     /**
@@ -66,6 +66,7 @@ class ExcelSheet {
     this.bargraph = document.getElementById("bar");
     this.linegraph = document.getElementById("line");
     this.uploadform = document.getElementById("uploadForm");
+    this.progressbar = document.getElementById("progressbar");
 
     this.loadData(0);
     this.initializeCanvas();
@@ -102,6 +103,7 @@ class ExcelSheet {
     this.linegraph.addEventListener("click", this.CreateLineGraph.bind(this));
     this.infinitediv.addEventListener("scroll", this.handleViewPort.bind(this));
     this.uploadform.addEventListener("submit", this.submitcsv.bind(this));
+    this.handleProgressBar = this.handleProgressBar.bind(this);
   }
 
   async loadData(s) {
@@ -117,7 +119,7 @@ class ExcelSheet {
           s++;
         }
         this.drawTable(this.startX, this.startY);
-        console.log(s, "a");
+        console.log(this.startX, "a");
       }
     } catch (error) {
       console.error("Error loading data:", error);
@@ -636,7 +638,7 @@ class ExcelSheet {
   }
 
 
-  CopyPaste(startcell, endcell, x) {
+  async CopyPaste(startcell, endcell, x) {
     if (x == "copy") {
       console.log("copy");
     }
@@ -646,30 +648,58 @@ class ExcelSheet {
   }
 
 
-  async submitcsv(event) {
-    event.preventDefault();
-    const fileInput = document.getElementById("fileInput");
-    const formData = new FormData();
-    formData.append("file", fileInput.files[0]);
+  async handleProgressBar() {
+    await axios.get(`http://localhost:5099/api/getUploadStatus`)
+      .then((response) => {
+        if (response.data >= 0 && response.data <= 100) {
+          this.progressbar.style.display = 'block';
+          this.progressbar.value = response.data;
+        }
+        else {
+          this.progressbar.style.display = 'none';
+        }
+        console.log(response.data);
+        setTimeout(this.handleProgressBar, 100);
 
-    try {
-      const response = await fetch("http://localhost:5099/api/upload", {
-        method: "POST",
-        body: formData
-      });
+      })
+      .catch(
+        (error) => {
+          console.error("Error:", error);
+        }
+      );
 
-      if (response.ok) {
-        alert("File uploaded successfully: ");
-      } else {
-        alert("File upload failed.");
-      }
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      alert("An error occurred while uploading the file.");
-    }
   }
 
 
+
+
+  async submitcsv(e) {
+    e.preventDefault();
+    this.handleProgressBar();
+    const fileInput = document.getElementById("fileInput");
+    const formData = new FormData();
+    formData.append("file", fileInput.files[0]);
+    try {
+      await axios.post("http://localhost:5099/api/upload", formData
+      )
+        .then((response) => {
+          console.log(response)
+          alert("successful");
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert(error);
+        });
+
+    } catch (error) {
+      console.error("Error ", error);
+      alert("Error ", error);
+    }
+    finally {
+      location.reload();
+    }
+    location.reload();
+  }
   /**
    * @type {EventListener}
    * @param {KeyboardEvent} event Key Down
@@ -842,13 +872,12 @@ class ExcelSheet {
     this.startCell = { col: this.laststart.col, row: this.laststart.row };
     this.endCell = { col: this.lastend.col, row: this.lastend.row };
 
-    if ((this.startX % 50).toPrecision(4) == 0.0000) {
+    if (Math.abs(change - this.lastchange) >= 1000) {
       await this.loadData(this.startX);
-      console.log(this.startX);
+      this.lastchange = change;
     }
     this.drawTable(this.startX, this.startY);
     this.isSelected = false;
-
   }
 
 
