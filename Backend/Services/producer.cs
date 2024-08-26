@@ -15,6 +15,7 @@ public class ProducerService
     public void ProduceChunks(string filePath)
     {
         var chunkNumber = 0;
+        _csvChunkService.GetChunkCount(filePath);
 
         while (true)
         {

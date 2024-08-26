@@ -46,7 +46,7 @@ public class ConsumerService
                 {
                     await dbConnection.OpenAsync();
 
-                    var query = $"INSERT INTO employeeinfo (`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14` ,`15`) VALUES {string.Join(",", valuesList)};";
+                    var query = $"INSERT INTO employeeinfo (`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14` ,`15`) VALUES {string.Join(",", valuesList)};UPDATE employeedb.chunkinfo SET recievedchunks = recievedchunks + 1;";
 
                     using (var command = new MySqlCommand(query, dbConnection))
                     {
