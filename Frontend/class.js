@@ -104,6 +104,7 @@ class ExcelSheet {
     this.infinitediv.addEventListener("scroll", this.handleViewPort.bind(this));
     this.uploadform.addEventListener("submit", this.submitcsv.bind(this));
     this.handleProgressBar = this.handleProgressBar.bind(this);
+    this.deleteCells = this.deleteCells.bind(this);
   }
 
   async loadData(s) {
@@ -700,15 +701,33 @@ class ExcelSheet {
       console.error("Error ", error);
       alert("Error ", error);
     }
-    // finally {
-    //   location.reload();
-    // }
-
+    finally {
+      location.reload();
+    }
   }
   /**
-   * @type {EventListener}
-   * @param {KeyboardEvent} event Key Down
+   * 
+   * @param {row first} r1 
+   * @param {colomn first} c1 
+   * @param {row second} r2 
+   * @param {colomn second} c2 
    */
+
+  async deleteCells(r1, c1, r2, c2) {
+    try {
+      const response = await axios.delete('http://localhost:5099/api/deletecells', {
+        params: { r1, c1, r2, c2 }
+      });
+      console.log('sucess', response.data);
+    } catch (error) {
+      console.error('Error', error);
+    }
+    finally {
+      await this.loadData(this.startX);
+      this.drawTable(this.startX, this.startY);
+    }
+  }
+
 
   handleKeyDown(event) {
     if (event.shiftKey) {
@@ -747,10 +766,11 @@ class ExcelSheet {
       event.preventDefault();
       console.log("hello");
       // this.data[]
-    } else if (event.key === "Delete" && this.chartselect) {
+    } else if (event.key === "Delete") {
       event.preventDefault();
-      console.log("delete");
-      // chartselect.remove();
+      // this.prevcell = { col: this.prevcell.col + this.startY, row: this.prevcell.row + this.startX };
+      // this.prevstart = { col: this.prevstart.col + this.startY, row: this.prevstart.row + this.startX};
+      this.deleteCells(this.lastend.row + this.startX, this.lastend.col + this.startY, this.laststart.row + this.startX, this.laststart.col + this.startY);
     }
     else {
       event.preventDefault();

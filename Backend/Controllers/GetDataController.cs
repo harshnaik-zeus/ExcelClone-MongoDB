@@ -20,9 +20,9 @@ namespace Backend.Controllers
         [HttpGet("getPageData")]
         public async Task<ActionResult> GetPageData([FromQuery] int id = 0)
         {
+            using var connection = new MySqlConnection(_connectionString);
             try
             {
-                using var connection = new MySqlConnection(_connectionString);
                 await connection.OpenAsync();
 
                 string query = $"SELECT * FROM employeedb.employeeinfo ORDER BY `1` ASC LIMIT {id}, 100";
@@ -46,6 +46,10 @@ namespace Backend.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { message = ex.Message });
+            }
+            finally
+            {
+                await connection.CloseAsync();
             }
         }
     }
