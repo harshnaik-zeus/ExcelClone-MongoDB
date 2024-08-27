@@ -35,7 +35,7 @@ class ExcelSheet {
      * array of colomns widths and row heights
      */
     this.cellWidths = Array(50).fill(this.cellWidth);
-    this.rowHeights = Array(2000).fill(this.cellHeight);
+    this.rowHeights = Array(100000).fill(this.cellHeight);
 
     // marching ants flag
     this.marchingants = false;
@@ -196,7 +196,7 @@ class ExcelSheet {
       this.c.restore();
     }
 
-    for (let index = 0; index <= this.rowHeights.length; index++) {
+    for (let index = 0; index <= 37; index++) {
       this.c.save();
       this.c.beginPath();
       this.c.fillStyle = "#e3e3e3";
@@ -208,7 +208,7 @@ class ExcelSheet {
       this.c.restore();
     }
     let y = 15;
-    for (let i = s; i <= s + 37; i++) {
+    for (let i = s - 1; i <= s + 37; i++) {
       let x = 5;
       for (let j = t + 1; j < 15 + t; j++) {
 
@@ -286,7 +286,7 @@ class ExcelSheet {
         break;
       }
     }
-    for (let index = 0; index < this.rowHeights.length; index++) {
+    for (let index = 0; index < 37; index++) {
       if (sum2 + this.rowHeights[index] <= y) {
         sum2 += this.rowHeights[index];
         continue;
@@ -478,7 +478,7 @@ class ExcelSheet {
     const rect = this.excel.getBoundingClientRect();
     this.rowStartPoint = event.clientY - rect.top;
     let sum = 0;
-    for (let index = this.startY - 1; index < this.rowHeights.length; index++) {
+    for (let index = this.startY - 1; index < 37; index++) {
       sum += this.rowHeights[index];
       if (Math.abs(sum - this.rowStartPoint) <= 5) {
         this.rowTarget = index;
@@ -651,9 +651,12 @@ class ExcelSheet {
   async handleProgressBar() {
     await axios.get(`http://localhost:5099/api/getUploadStatus`)
       .then((response) => {
-        if (response.data >= 0 && response.data <= 100) {
+        if (response.data == 100) {
+          // location.reload();
+        }
+        else if (response.data >= 0 && response.data <= 100) {
           this.progressbar.style.display = 'block';
-          this.progressbar.value = response.data;
+          this.progressbar.value = response.data + 20;
         }
         else {
           this.progressbar.style.display = 'none';
@@ -671,10 +674,11 @@ class ExcelSheet {
   }
 
 
-
-
   async submitcsv(e) {
     e.preventDefault();
+    window.onbeforeunload = await function () {
+      return "OK";
+    }
     this.handleProgressBar();
     const fileInput = document.getElementById("fileInput");
     const formData = new FormData();
@@ -684,7 +688,8 @@ class ExcelSheet {
       )
         .then((response) => {
           console.log(response)
-          alert("successful");
+          alert("Data added succesfully, Reload to see");
+          location.reload();
         })
         .catch((error) => {
           console.error("Error:", error);
@@ -695,10 +700,10 @@ class ExcelSheet {
       console.error("Error ", error);
       alert("Error ", error);
     }
-    finally {
-      location.reload();
-    }
-    location.reload();
+    // finally {
+    //   location.reload();
+    // }
+
   }
   /**
    * @type {EventListener}
@@ -873,8 +878,8 @@ class ExcelSheet {
     this.endCell = { col: this.lastend.col, row: this.lastend.row };
 
     if (Math.abs(change - this.lastchange) >= 1000) {
-      await this.loadData(this.startX);
       this.lastchange = change;
+      await this.loadData(this.startX);
     }
     this.drawTable(this.startX, this.startY);
     this.isSelected = false;
