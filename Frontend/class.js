@@ -67,6 +67,11 @@ class ExcelSheet {
     this.linegraph = document.getElementById("line");
     this.uploadform = document.getElementById("uploadForm");
     this.progressbar = document.getElementById("progressbar");
+    this.finddiv = document.getElementById("findandreplace");
+    this.dialoguebox = document.getElementsByClassName("find-replace-container")[0];
+    this.closedialoguebox = document.getElementsByClassName("close-button")[0];
+    this.findbutton = document.getElementById("findclicked");
+    this.replacebutton = document.getElementById("replaceclicked");
 
     this.loadData(0);
     this.initializeCanvas();
@@ -103,10 +108,19 @@ class ExcelSheet {
     this.linegraph.addEventListener("click", this.CreateLineGraph.bind(this));
     this.infinitediv.addEventListener("scroll", this.handleViewPort.bind(this));
     this.uploadform.addEventListener("submit", this.submitcsv.bind(this));
+    this.finddiv.addEventListener("click", this.showfindrepdiv.bind(this));
+    this.closedialoguebox.addEventListener("click", this.hidefindrepdiv.bind(this));
+    this.findbutton.addEventListener("click", this.showfinds.bind(this));
+    this.replacebutton.addEventListener("click", this.showreplace.bind(this));
     this.handleProgressBar = this.handleProgressBar.bind(this);
     this.deleteCells = this.deleteCells.bind(this);
+    // document.querySelectorAll("tab-button").addEventListener("click", this.openTab.bind(this));
   }
 
+  /**
+   * 
+   * @param {startX} s 
+   */
   async loadData(s) {
     try {
       const response = await axios.get(`http://localhost:5099/api/getPageData?id=${s}`);
@@ -126,6 +140,7 @@ class ExcelSheet {
       console.error("Error loading data:", error);
     }
   }
+
 
   /**
    * Draw top Header
@@ -638,7 +653,36 @@ class ExcelSheet {
     }
   }
 
+  openTab(tabName) {
+    const tabContents = document.querySelectorAll('.tab-content');
+    const tabButtons = document.querySelectorAll('.tab-button');
 
+    tabContents.forEach(content => {
+      content.classList.remove('active');
+    });
+
+    tabButtons.forEach(button => {
+      button.classList.remove('active');
+    });
+
+    document.getElementById(tabName).classList.add('active');
+    // document.querySelector(`[onclick="openTab('${tabName}')"]`).classList.add('active');
+  }
+
+  showfindrepdiv(event) {
+    this.dialoguebox.style.display = "block";
+  }
+
+  hidefindrepdiv(event) {
+    this.dialoguebox.style.display = "none";
+  }
+
+  /**
+   * 
+   * @param {start of range} startcell 
+   * @param {end of range} endcell 
+   * @param {pressed key} x 
+   */
   async CopyPaste(startcell, endcell, x) {
     if (x == "copy") {
       console.log("copy");
@@ -648,7 +692,9 @@ class ExcelSheet {
     }
   }
 
-
+  /**
+   * 
+   */
   async handleProgressBar() {
     await axios.get(`http://localhost:5099/api/getUploadStatus`)
       .then((response) => {
@@ -674,7 +720,10 @@ class ExcelSheet {
 
   }
 
-
+  /**
+   * 
+   * @param {} e 
+   */
   async submitcsv(e) {
     e.preventDefault();
     window.onbeforeunload = await function () {
@@ -718,7 +767,7 @@ class ExcelSheet {
       const response = await axios.delete('http://localhost:5099/api/deletecells', {
         params: { r1, c1, r2, c2 }
       });
-      console.log('sucess', response.data);
+      console.log('sucess, data has been deleted', response);
     } catch (error) {
       console.error('Error', error);
     }
@@ -728,6 +777,17 @@ class ExcelSheet {
     }
   }
 
+  showfinds(event) {
+    this.openTab('find');
+  }
+  showreplace(event) {
+    this.openTab('replace');
+  }
+
+  /**
+   * 
+   * @param {pressed keys} event 
+   */
 
   handleKeyDown(event) {
     if (event.shiftKey) {
@@ -770,7 +830,7 @@ class ExcelSheet {
       event.preventDefault();
       // this.prevcell = { col: this.prevcell.col + this.startY, row: this.prevcell.row + this.startX };
       // this.prevstart = { col: this.prevstart.col + this.startY, row: this.prevstart.row + this.startX};
-      this.deleteCells(this.lastend.row + this.startX, this.lastend.col + this.startY, this.laststart.row + this.startX, this.laststart.col + this.startY);
+      this.deleteCells(this.lastend.row + this.startX, this.lastend.col, this.laststart.row + this.startX, this.laststart.col);
     }
     else {
       event.preventDefault();
@@ -904,6 +964,11 @@ class ExcelSheet {
     this.drawTable(this.startX, this.startY);
     this.isSelected = false;
   }
+
+  /**
+   * 
+   * @param {div} graphdiv 
+   */
 
 
   MakeDragable(graphdiv) {

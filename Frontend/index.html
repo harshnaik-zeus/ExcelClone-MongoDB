@@ -4,9 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.4/axios.min.js"></script>
+    <!-- <script type="module" src="class.js"></script> -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
   </head>
   <body>
@@ -22,13 +24,143 @@
     <div id="dottedline"></div>
     <div class="headline marching-ants marching"></div>
   </div>
+  <div class="find-replace-container">
+    <div class="find-replace-header">
+        <span>Find and Replace</span>
+        <button class="close-button">&times;</button>
+    </div>
+    <div class="find-replace-body">
+        <div class="tabs">
+            <button class="tab-button active" id="findclicked"">Find</button>
+            <button class="tab-button" id="replaceclicked"">Replace</button>
+        </div>
+
+        <!-- Find Tab Content -->
+        <div class="tab-content active" id="find">
+            <div class="root-410">
+                <div class="">
+                    <label for="findTextId" id="TextFieldLabel5866" class="ms-Label textContainer root-407">
+                        Find
+                    </label>
+                    <div class="findInputDiv">
+                        <input type="text" id="findTextId" placeholder="Insert Text" spellcheck="false"
+                            autocomplete="off" data-unique-id="findTextId-input" maxlength="255"
+                            aria-labelledby="TextFieldLabel5866" class="findInput" aria-label="Find"
+                            aria-invalid="false">
+                    </div>
+                </div>
+            </div>
+            <label class="wildcardtext">
+                Wildcards can expand search. For example, "sm?th" finds "smith".
+                <a target="_blank" href="https://go.microsoft.com/fwlink/?linkid=2190801"
+                    aria-label="Wildcards can expand search. For example, &quot;sm?th&quot; finds &quot;smith&quot;.Learn more about using wildcards to search"
+                    class="link">
+                    Learn More
+                </a>
+            </label>
+
+            <div style="transform: rotate(0deg); padding-top: 4px; font-weight: 600; display: flex; flex-direction: row; margin-right: 4px;">
+                <button type="button" role="iconButton" aria-expanded="false" class="ms-Button ms-Button--icon root-423" aria-label="Search options" data-is-focusable="true">
+                    <span class="ms-Button-flexContainer flexContainer-108" data-automationid="splitbuttonprimary">
+                        <i data-icon-name="CommonControlChevronRight_12" aria-hidden="true" class="ms-Icon root-89 ms-Button-icon icon-424">
+                            <svg height="100%" width="100%" viewBox="0,0,2048,2048" focusable="false">
+                                <path type="path" class="OfficeIconColors_HighContrast" d="M 743 1767 l -121 -121 l 708 -707 l -708 -708 l 121 -121 l 828 829 z"></path>
+                                <path type="path" class="OfficeIconColors_m22" d="M 743 1767 l -121 -121 l 708 -707 l -708 -708 l 121 -121 l 828 829 z"></path>
+                            </svg>
+                        </i>
+                    </span>
+                </button>
+                <label class="ms-Label root-425">Search options</label>
+            </div>
+
+            <!-- Bottom Buttons -->
+            <div class="ms-Dialog-actions actions-426">
+                <div class="ms-Dialog-actionsRight actionsRight-428">
+                    <span class="ms-Dialog-action action-427">
+                        <div class="css-319">
+                            <button type="button" data-automation-type="AppButton" data-unique-id="DialogActionButton" id="DialogActionButton" class="ms-Button footerButton primaryDialogButton root-382" aria-label="Find next" data-is-focusable="true">
+                                <span class="ms-Button-flexContainer flexContainer-108" data-automationid="splitbuttonprimary">
+                                    <span class="ms-Button-textContainer textContainer-109">
+                                        <span class="ms-Button-label textContainer label-431" id="id__6246">Find next</span>
+                                    </span>
+                                </span>
+                            </button>
+                            <button type="button" data-automation-type="AppButton" data-unique-id="DialogSecondaryActionButton" id="DialogSecondaryActionButton" class="ms-Button footerButton root-386" aria-label="Find all" data-is-focusable="true">
+                                <span class="ms-Button-flexContainer flexContainer-108" data-automationid="splitbuttonprimary">
+                                    <span class="ms-Button-textContainer textContainer-109">
+                                        <span class="ms-Button-label textContainer label-431" id="id__6249">Find all</span>
+                                    </span>
+                                </span>
+                            </button>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Replace Tab Content -->
+        <div class="tab-content" id="replace">
+            <div class="root-410">
+                <div class="">
+                    <label for="findReplaceTextId" id="TextFieldLabelReplace5866" class="ms-Label textContainer root-407">
+                        Find
+                    </label>
+                    <div class="findInputDiv">
+                        <input type="text" id="findReplaceTextId" placeholder="Insert Text" spellcheck="false"
+                            autocomplete="off" data-unique-id="findReplaceTextId-input" maxlength="255"
+                            aria-labelledby="TextFieldLabelReplace5866" class="findInput" aria-label="Find"
+                            aria-invalid="false">
+                    </div>
+                </div>
+            </div>
+            <div class="root-410">
+                <div class="">
+                    <label for="replaceTextId" id="TextFieldLabelReplace" class="ms-Label textContainer root-407">
+                        Replace with
+                    </label>
+                    <div class="findInputDiv">
+                        <input type="text" id="replaceTextId" placeholder="Insert Text" spellcheck="false"
+                            autocomplete="off" data-unique-id="replaceTextId-input" maxlength="255"
+                            aria-labelledby="TextFieldLabelReplace" class="findInput" aria-label="Replace"
+                            aria-invalid="false">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Buttons -->
+            <div class="ms-Dialog-actions actions-426">
+                <div class="ms-Dialog-actionsRight actionsRight-428">
+                    <span class="ms-Dialog-action action-427">
+                        <div class="css-319">
+                            <button type="button" data-automation-type="AppButton" data-unique-id="DialogActionButtonReplace" id="DialogActionButtonReplace" class="ms-Button footerButton primaryDialogButton root-382" aria-label="Replace next" data-is-focusable="true">
+                                <span class="ms-Button-flexContainer flexContainer-108" data-automationid="splitbuttonprimary">
+                                    <span class="ms-Button-textContainer textContainer-109">
+                                        <span class="ms-Button-label textContainer label-431" id="id__6250">Replace next</span>
+                                    </span>
+                                </span>
+                            </button>
+                            <button type="button" data-automation-type="AppButton" data-unique-id="DialogSecondaryActionButtonReplace" id="DialogSecondaryActionButtonReplace" class="ms-Button footerButton root-386" aria-label="Replace all" data-is-focusable="true">
+                                <span class="ms-Button-flexContainer flexContainer-108" data-automationid="splitbuttonprimary">
+                                    <span class="ms-Button-textContainer textContainer-109">
+                                        <span class="ms-Button-label textContainer label-431" id="id__6251">Replace all</span>
+                                    </span>
+                                </span>
+                            </button>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>
 <div><span class="stats"><button id="bar" class="Graph buttons">Bar Graph</button><button id = "line" class="graph buttons">Line Graph</button>
 <form id="uploadForm" class="forms" enctype="multipart/form-data">
   <input type="file" id="fileInput" class="forminput" name="file" accept=".csv" required>
   <button class="buttons" type="submit">Upload CSV</button>
 </form>
-<p class="sum">SUM :</p><p class="min">MIN :</p><p class="max">MAX :</p></span></div>
+<button id="findandreplace" class="findrepbutton buttons">find/Replace</button></span></div>
 <progress class="progress" id="progressbar" max="100"></progress>
   </body>
   <script type="module" src="class.js"></script>

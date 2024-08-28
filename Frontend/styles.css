@@ -13,7 +13,7 @@
 #mainbig #container #candiv {
   position: sticky;
   top: 0px;
-  left: 0px;
+  left: 4px;
   width: 1900px;
   height: 780px;
 }
@@ -21,8 +21,9 @@
   background: #f5f5f5;
   z-index: 100;
   position: sticky;
-  top: 0px;
+  top: -20px;
   left: 0px;
+  margin-top: -5.5px;
   padding-right: 0px;
 }
 #mainbig #container #candiv #canvas2 {
@@ -30,7 +31,7 @@
   position: sticky;
   z-index: 100;
   margin-left: 20px;
-  margin-top: -4px;
+  margin-top: 4px;
   top: 0;
   left: 0px;
 }
@@ -38,7 +39,7 @@
   background: white;
   position: absolute;
   z-index: 1;
-  top: 20px;
+  top: 24px;
   left: 20px;
 }
 #mainbig #container #selection {
@@ -119,7 +120,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding-top: 20px;
+  padding-top: 15px;
 }
 
 .buttons {
@@ -131,7 +132,9 @@
   border-radius: 3px;
   width: 150px;
   height: 30px;
-  text-align: center;
+  padding-top: 5px;
+  padding-left: 40px;
+  text-align: right;
   transition-duration: 0.4s;
   text-decoration: none;
   overflow: hidden;
@@ -145,7 +148,7 @@
   position: absolute;
   padding-top: 300%;
   padding-left: 350%;
-  margin-left: -20px !important;
+  margin-left: -40px !important;
   margin-top: -120%;
   opacity: 0;
   transition: all 0.8s;
@@ -185,4 +188,393 @@
   width: 100%;
   height: 10px;
   display: none;
+}
+
+.find-replace-container {
+  position: absolute;
+  top: 200px;
+  left: 637px;
+  display: none;
+  width: 466px;
+  border: 1px solid #000;
+  border-radius: 0px;
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.find-replace-header {
+  display: flex;
+  height: 47px;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 24px;
+  color: #107c41;
+  font-family: "Calibri";
+  /*     margin-bottom: 10px; */
+  /*     border-bottom: 1px solid #ccc; */
+  padding: 12px 32px 16px 20px;
+}
+
+.close-button {
+  position: absolute;
+  left: 430px;
+  top: 10px;
+  background: none;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+  color: #666;
+}
+
+.find-replace-body {
+  padding: 0px 20px 20px;
+  box-sizing: border-box;
+  min-height: 258px;
+  background-color: rgb(255, 255, 255);
+}
+
+.tabs {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 10px;
+}
+
+.tab-button {
+  padding: 5px 15px;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-right: 5px;
+  font-family: "Segoe UI";
+  background-color: #fff;
+  border: 0px;
+  border-radius: 0px;
+  cursor: pointer;
+  font-size: 14px;
+  height: 44px;
+  line-height: 20px;
+}
+
+.tab-button.active {
+  font-family: "Segoe UI";
+  border-bottom: 2px solid #107c41;
+  background-color: #fff;
+  font-weight: 600;
+  line-height: 20px;
+  /*     border-bottom: none; */
+}
+
+.root-410 {
+  box-shadow: none;
+  margin: 0px 0px 2px;
+  padding: 16px 0px 0px;
+  box-sizing: border-box;
+  position: relative;
+  font-style: normal;
+  font-family: "Segoe UI";
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.findInputDiv {
+  box-shadow: none;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  border: 1px solid rgb(138, 136, 134);
+  background: transparent;
+  cursor: text;
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  position: relative;
+}
+
+.findInput {
+  box-shadow: none;
+  margin: 0px;
+  padding: 0px 12px;
+  box-sizing: border-box;
+  font-size: 14px;
+  border-radius: 0px;
+  border: none;
+  background: none transparent;
+  color: rgb(37, 36, 35);
+  width: 100%;
+  min-width: 0px;
+  text-overflow: ellipsis;
+  outline: 0px;
+}
+
+.wildcardtext {
+  font-family: "Segoe UI";
+  -webkit-font-smoothing: antialiased;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgb(50, 49, 48);
+  box-sizing: border-box;
+  box-shadow: none;
+  margin: 0px;
+  display: block;
+  padding: 0px 0px 12px;
+  overflow-wrap: break-word;
+}
+
+.link {
+  color: #107c41;
+  outline: none;
+}
+
+.flexContainer-108 {
+  display: flex;
+  height: 100%;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-424 {
+  font-size: 16px;
+  margin: 0px 4px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.root-89 {
+  display: inline-block;
+}
+
+.root-423 {
+  outline: transparent;
+  position: relative;
+  font-family: "Segoe UI";
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  font-weight: 400;
+  border: none;
+  border-radius: 2px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0px;
+  text-decoration: none;
+  text-align: center;
+  width: 12px;
+  height: 12px;
+  background-color: transparent;
+  color: rgb(16, 124, 65);
+  margin: 0px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.root-425 {
+  font-family: "Segoe UI";
+  -webkit-font-smoothing: antialiased;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(0, 0, 0);
+  box-sizing: border-box;
+  box-shadow: none;
+  margin: 0px 0px 0px 7px;
+  display: block;
+  padding: 5px 0px;
+  overflow-wrap: break-word;
+  height: 20px;
+  line-height: 0px;
+  cursor: pointer;
+}
+
+.actions-426 {
+  position: relative;
+  width: 100%;
+  min-height: 24px;
+  line-height: 24px;
+  margin: 16px 0px 0px;
+  font-size: 0px;
+}
+
+.actionsRight-428 {
+  align-items: center;
+  display: flex;
+  font-size: 0px;
+  justify-content: flex-end;
+  margin-right: -4px;
+}
+
+.action-427 {
+  margin: 0px 4px;
+  flex-grow: 1;
+}
+
+.css-319 {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.actions-379 .ms-Button {
+  line-height: normal;
+  vertical-align: middle;
+}
+
+.root-382 {
+  height: 32px;
+  background-color: rgb(16, 124, 65);
+  color: rgb(255, 255, 255);
+  padding: 0px 11px;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  cursor: default;
+  vertical-align: top;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 600;
+  position: relative;
+  min-width: 82px;
+  letter-spacing: 0px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.flexContainer-108 {
+  display: flex;
+  height: 100%;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.textContainer-109 {
+  flex-grow: 1;
+}
+
+.label-384 {
+  line-height: 100%;
+  text-align: center;
+  margin-left: 8px;
+  margin-right: 8px;
+  display: block;
+}
+
+.root-386 {
+  height: 32px;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  padding: 0px 11px;
+  box-sizing: border-box;
+  border: 1px solid rgb(138, 136, 134);
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  cursor: default;
+  vertical-align: top;
+  border-radius: 2px;
+  font-size: 14px;
+  font-weight: 600;
+  position: relative;
+  min-width: 82px;
+  letter-spacing: 0px;
+  margin-left: 8px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+.tab-content {
+  display: block;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+#find-input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.search-options {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.search-options a {
+  color: #0078d4;
+  text-decoration: none;
+}
+
+.search-options a:hover {
+  text-decoration: underline;
+}
+
+.results {
+  margin-top: 10px;
+}
+
+.result-table {
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 13px;
+}
+
+.result-header {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+.result-header, .result-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.result-row:hover {
+  background-color: #e7f3ff;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.find-next, .find-all {
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #0078d4;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+.find-next:hover, .find-all:hover {
+  background-color: #005a9e;
+}
+
+/* Existing styles remain the same */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
 }/*# sourceMappingURL=styles.css.map */
