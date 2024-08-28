@@ -33,7 +33,6 @@ namespace Backend.Controllers
             {
                 await connection.OpenAsync();
 
-
                 var setClauses = new List<string>();
                 for (int i = c1 + 2; i <= c2 + 2; i++)
                 {
