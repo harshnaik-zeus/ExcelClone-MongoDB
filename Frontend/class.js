@@ -24,12 +24,6 @@ class ExcelSheet {
     this.startX = 1;
     this.startY = 1;
     this.lastchange = 0;
-    // this.word = "hello";
-
-    /**
-     * Data call from database
-     *   mock data -->
-     */
 
     /**
      * array of colomns widths and row heights
@@ -72,6 +66,11 @@ class ExcelSheet {
     this.closedialoguebox = document.getElementsByClassName("close-button")[0];
     this.findbutton = document.getElementById("findclicked");
     this.replacebutton = document.getElementById("replaceclicked");
+    this.findtext = document.getElementById("findTextId");
+    this.findtorep = document.getElementById("findReplaceTextId");
+    this.replacetext = document.getElementById("replaceTextId");
+    this.findall = document.getElementById("findallbtn");
+    this.replaceall = document.getElementById("replaceallbtn");
 
     this.loadData(0);
     this.initializeCanvas();
@@ -112,6 +111,11 @@ class ExcelSheet {
     this.closedialoguebox.addEventListener("click", this.hidefindrepdiv.bind(this));
     this.findbutton.addEventListener("click", this.showfinds.bind(this));
     this.replacebutton.addEventListener("click", this.showreplace.bind(this));
+    this.findall.addEventListener("click", this.findallbtn.bind(this));
+    this.replaceall.addEventListener("click", this.replaceallbtn.bind(this));
+    // this.findtorep.addEventListener("click", this.findtorepbox.bind(this));
+    // this.findtext.addEventListener("click", this.findtextbox.bind(this));
+    // this.replacetext.addEventListener("click", this.replacetextbox.bind(this));
     this.handleProgressBar = this.handleProgressBar.bind(this);
     this.deleteCells = this.deleteCells.bind(this);
     // document.querySelectorAll("tab-button").addEventListener("click", this.openTab.bind(this));
@@ -427,10 +431,10 @@ class ExcelSheet {
    */
   drawants(left, top, width, height) {
     this.ants.style.display = "block";
-    this.ants.style.left = `${left}px`;
-    this.ants.style.top = `${top}px`;
-    this.ants.style.width = `${width}px`;
-    this.ants.style.height = `${height}px`;
+    this.ants.style.left = `${left + 1}px`;
+    this.ants.style.top = `${top + 1}px`;
+    this.ants.style.width = `${width + 20}px`;
+    this.ants.style.height = `${height + 20}px`;
   }
 
   /**
@@ -671,6 +675,7 @@ class ExcelSheet {
 
   showfindrepdiv(event) {
     this.dialoguebox.style.display = "block";
+    this.MakeDragable(this.dialoguebox);
   }
 
   hidefindrepdiv(event) {
@@ -779,10 +784,48 @@ class ExcelSheet {
 
   showfinds(event) {
     this.openTab('find');
+
   }
   showreplace(event) {
     this.openTab('replace');
   }
+
+  findallbtn(event) {
+    console.log("finding");
+    //api req to find
+  }
+  async replaceallbtn(event) {
+    var tofind = this.findtorep.value;
+    var torep = this.replacetext.value;
+    try {
+      const response = await axios.post('http://localhost:5099/api/FindandReplace', {
+        findText: tofind,
+        replaceText: torep
+      });
+      console.log('Success, data has been replaced', response);
+      await this.loadData(this.startX - 1);
+      this.drawTable(this.startX, this.startY);
+    } catch (error) {
+      console.error('Error', error);
+    }
+
+
+  }
+
+
+  // findtorepbox(e) {
+  //   // this.findtorep.style.zIndex = "1000";
+  //   // this.findtorep.focus();
+  //   console.log("find to rep")
+  // }
+  // replacetextbox(e) {
+  //   // this.replacetext.focus();
+  //   console.log("replace")
+  // }
+  // findtextbox(e) {
+  //   // this.findtext.focus();
+  //   console.log("find")
+  // }
 
   /**
    * 
@@ -791,7 +834,7 @@ class ExcelSheet {
 
   handleKeyDown(event) {
     if (event.shiftKey) {
-      event.preventDefault();
+      // event.preventDefault();
       if (!this.startCell) {
         this.startCell = { col: this.laststart.col, row: this.laststart.row };
         this.endCell = { col: this.lastend.col, row: this.lastend.row };
@@ -832,7 +875,7 @@ class ExcelSheet {
       // this.prevstart = { col: this.prevstart.col + this.startY, row: this.prevstart.row + this.startX};
       this.deleteCells(this.lastend.row + this.startX, this.lastend.col, this.laststart.row + this.startX, this.laststart.col);
     }
-    else {
+    else if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) {
       event.preventDefault();
       this.startCell = { col: this.laststart.col, row: this.laststart.row };
       this.endCell = { col: this.laststart.col, row: this.laststart.row };
@@ -894,22 +937,24 @@ class ExcelSheet {
     // let x = event.clientX - rect.left;
     // let y = event.clientY - rect.top;
     // let dist = this.getLeftandTop(x, y);
-    // // console.log(this.getLeftandTop(x, y));
+    // console.log(this.getLeftandTop(x, y));
     // let datacell = this.getCellAtPosition(x, y);
     // let ipbox = document.getElementById('ipbox');
     // ipbox.style.display = 'block';
     // ipbox.style.border = 'none';
-    // ipbox.style.left = `${dist.left + 21}px`;
-    // ipbox.style.top = `${dist.top + 21}px`;
-    // ipbox.style.width = `${dist.width - 5}px`;
-    // ipbox.style.height = `${dist.height - 3}px`;
-    // this.word = ipbox.value;
+    // ipbox.style.left = `${dist.left + 25}px`;
+    // ipbox.style.top = `${dist.top + 25}px`;
+    // ipbox.style.width = `${dist.width - 2}px`;
+    // ipbox.style.height = `${dist.height - 2}px`;
+    // var row = ((dist.top + 20) / 20) - this.startX;
+    // var col = ((dist.left + 100) / 100) - this.startY;
+    // ipbox.value = this.data[row][col + 1];
     // ipbox.focus();
 
   }
   SaveData(event) {
-    // this.data[15][5] = this.word;
-    // this.drawTable(this.startX,this.startY);
+    // this.data[15][5] = "hello";
+    this.drawTable(this.startX, this.startY);
   }
 
   /**
