@@ -797,6 +797,9 @@ class ExcelSheet {
   async replaceallbtn(event) {
     var tofind = this.findtorep.value;
     var torep = this.replacetext.value;
+    this.dialoguebox.style.cursor = "progress";
+    this.replacetext.style.cursor = "progress";
+    this.replaceall.style.cursor = "progress";
     try {
       const response = await axios.post('http://localhost:5099/api/FindandReplace', {
         findText: tofind,
@@ -808,7 +811,9 @@ class ExcelSheet {
     } catch (error) {
       console.error('Error', error);
     }
-
+    this.dialoguebox.style.cursor = "auto";
+    this.replacetext.style.cursor = "auto";
+    this.replaceall.style.cursor = "auto";
 
   }
 
