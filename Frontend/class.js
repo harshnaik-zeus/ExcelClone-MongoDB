@@ -23,6 +23,8 @@ class ExcelSheet {
     this.lastend = { col: 0, row: 0 };
     this.startX = 1;
     this.startY = 1;
+    this.copyToClipboardString = "";
+    this.copyToClipboardData = [];
     this.lastchange = 0;
 
     /**
@@ -113,6 +115,7 @@ class ExcelSheet {
     this.replacebutton.addEventListener("click", this.showreplace.bind(this));
     this.findall.addEventListener("click", this.findallbtn.bind(this));
     this.replaceall.addEventListener("click", this.replaceallbtn.bind(this));
+    this.copyToClipboard = this.copyToClipboard.bind(this);
     // this.findtorep.addEventListener("click", this.findtorepbox.bind(this));
     // this.findtext.addEventListener("click", this.findtextbox.bind(this));
     // this.replacetext.addEventListener("click", this.replacetextbox.bind(this));
@@ -682,6 +685,17 @@ class ExcelSheet {
     this.dialoguebox.style.display = "none";
   }
 
+  async copyToClipboard(text) {
+    await navigator.clipboard.writeText(text).then(
+      () => {
+        console.log('Text copied to clipboard successfully!');
+      },
+      (err) => {
+        console.error('Could not copy text: ', err);
+      }
+    );
+  }
+
   /**
    * 
    * @param {start of range} startcell 
@@ -690,12 +704,55 @@ class ExcelSheet {
    */
   async CopyPaste(startcell, endcell, x) {
     if (x == "copy") {
-      console.log("copy");
+      let lx = Math.min(this.lastend.row + this.startX, this.laststart.row + this.startX);
+      let ly = Math.min(this.lastend.col, this.laststart.col);
+      let hx = Math.max(this.lastend.row + this.startX, this.laststart.row + this.startX);
+      let hy = Math.max(this.lastend.col, this.laststart.col);
+
+      this.copyToClipboardString = "";
+      for (let j = lx - 1; j <= hx - 1; ++j) {
+        for (let i = ly + 1; i <= hy + 1; ++i) {
+          this.copyToClipboardString += (this.data[j][i] || "") + ((i === hy + 1) ? "\n" : "	");
+        }
+      }
+      this.copyToClipboardData = [];
+      for (let j = lx - 1; j <= hx - 1; ++j) {
+        var line = [];
+        for (let i = ly + 1; i <= hy + 1; ++i) {
+          line.push(this.data[j][i]);
+        }
+        this.copyToClipboardData.push(line);
+      }
+
+      this.copyToClipboard(this.copyToClipboardString);
+      // console.log(this.copyToClipboardData);
     }
     else {
-      console.log("paste");
+      // var deltaX;
+      // if (this.startX == 1) deltaX = 0;
+      // else deltaX = this.startX;
+      var pasteonrow = Math.min(this.lastend.row + this.startX, this.laststart.row + this.startX);
+      var pasteoncol = Math.min(this.lastend.col, this.laststart.col);
+      const requestBody = {
+        data: this.copyToClipboardData,
+        row: pasteonrow,
+        col: pasteoncol
+      };
+
+      try {
+        const response = await axios.post('http://localhost:5099/api/PasteData', requestBody);
+        console.log('Success, data pasted');
+        await this.loadData(this.startX);
+        // this.startCell = { col: pasteoncol, row: pasteonrow };
+        // this.endCell = { col: pasteoncol + this.copyToClipboardData[0].length, row: pasteonrow + + this.copyToClipboardData.length };
+        this.drawTable(this.startX, this.startY);
+      } catch (error) {
+        console.error('Error', error);
+      }
+
     }
   }
+
 
   /**
    * 
@@ -814,8 +871,8 @@ class ExcelSheet {
     this.dialoguebox.style.cursor = "auto";
     this.replacetext.style.cursor = "auto";
     this.replaceall.style.cursor = "auto";
-
   }
+
 
 
   // findtorepbox(e) {
@@ -864,6 +921,8 @@ class ExcelSheet {
         this.drawTable(this.startX, this.startY);
         this.marchingants = false;
       } else if (event.key == "V" || event.key == "v") {
+        this.startCell = this.laststart;
+        this.endCell = this.lastend;
         this.ants.style.display = "none";
         this.CopyPaste(this.startCell, this.endCell, "paste");
         this.drawTable(this.startX, this.startY);
@@ -942,8 +1001,8 @@ class ExcelSheet {
     // let x = event.clientX - rect.left;
     // let y = event.clientY - rect.top;
     // let dist = this.getLeftandTop(x, y);
-    // console.log(this.getLeftandTop(x, y));
     // let datacell = this.getCellAtPosition(x, y);
+    // console.log(dist, datacell);
     // let ipbox = document.getElementById('ipbox');
     // ipbox.style.display = 'block';
     // ipbox.style.border = 'none';
