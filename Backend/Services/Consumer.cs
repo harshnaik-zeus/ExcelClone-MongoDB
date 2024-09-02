@@ -1,11 +1,9 @@
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using MySql.Data.MySqlClient;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using MySql.Data.MySqlClient;
-using System.Text;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-
 
 public class ConsumerService
 {
@@ -26,7 +24,7 @@ public class ConsumerService
             var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
             var lines = message.Split('\n');
-            // Console.WriteLine(message);
+            // Console.WriteLine(lines[0]);
 
             var valuesList = new List<string>();
 
@@ -46,7 +44,8 @@ public class ConsumerService
                 {
                     await dbConnection.OpenAsync();
 
-                    var query = $"INSERT INTO employeeinfo (`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14` ,`15`) VALUES {string.Join(",", valuesList)};UPDATE employeedb.chunkinfo SET recievedchunks = recievedchunks + 1;";
+                    var query =
+                        $"INSERT INTO employeeinfo (`1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14` ,`15`) VALUES {string.Join(",", valuesList)};UPDATE employeedb.chunkinfo SET recievedchunks = recievedchunks + 1;";
 
                     using (var command = new MySqlCommand(query, dbConnection))
                     {

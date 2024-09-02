@@ -36,7 +36,6 @@ namespace Backend.Controllers
             {
                 return BadRequest(new { message = "findText and replaceText are required." });
             }
-
             using var connection = new MySqlConnection(_connectionString);
             try
             {
